@@ -5,10 +5,12 @@ import {
   BookOpen,
   Bot,
   ChevronRight,
+  FileText,
   Github,
   Loader2,
   MessageSquareMore,
   PenTool,
+  X,
 } from "lucide-react";
 
 import type {
@@ -170,6 +172,10 @@ function HomeContent() {
   const [writeInput, setWriteInput] = useState("");
   const [answerTexts, setAnswerTexts] = useState<Record<number, string>>({});
   const [hiddenQuestionIds, setHiddenQuestionIds] = useState<Set<number>>(new Set());
+  const [coverLetterOpen, setCoverLetterOpen] = useState(false);
+  const [coverLetterPrompt, setCoverLetterPrompt] = useState(
+    `(*필수) [자기소개] AI 및 SW분야의 전문성을 키우기 위해 몰입했던 경험과 도전이 무엇인지, 또한 이러한 성장과정을 통해 얻은 배움은 무엇인지를 서술하여 주시기 바랍니다.(최소 400자, 최대 1000자 입력가능)\n\n(*필수) [연수계획서] AI·SW마에스트로 과정 참여를 통해 어떠한 프로젝트를 수행하고 싶은가요? 해당 프로젝트를 수행하기 위한 계획과 이루고자 하는 목표가 무엇인지 구체적으로 서술하여 주시기 바랍니다.(최소 400자, 최대 1000자 입력가능)`,
+  );
 
   if (homeSubView === "history") {
     return <HistoryView />;
@@ -381,6 +387,63 @@ function HomeContent() {
           </div>
         )}
       </section>
+
+      {/* 자소서 생성 버튼 */}
+      <section className="px-5 pb-6">
+        <button
+          type="button"
+          onClick={() => setCoverLetterOpen(true)}
+          className="w-full py-3.5 bg-neutral-900 text-white rounded-2xl text-sm font-bold flex items-center justify-center gap-2 transition-transform duration-150 active:scale-[0.98]"
+        >
+          <FileText size={16} /> 자소서 생성
+        </button>
+      </section>
+
+      {/* 자소서 생성 다이얼로그 */}
+      {coverLetterOpen && (
+        <div className="fixed inset-0 z-[60]">
+          <div
+            className="absolute inset-0 bg-black/30"
+            onClick={() => setCoverLetterOpen(false)}
+          />
+          <div className="absolute inset-0 flex items-center justify-center px-5">
+            <div className="bg-white rounded-2xl shadow-xl border border-neutral-100 w-full max-w-[390px] max-h-[80vh] flex flex-col overflow-hidden">
+              {/* 헤더 */}
+              <div className="flex justify-between items-center px-5 pt-5 pb-3 shrink-0">
+                <h3 className="font-bold text-base">자소서 생성</h3>
+                <button
+                  type="button"
+                  onClick={() => setCoverLetterOpen(false)}
+                >
+                  <X size={18} className="text-neutral-400" />
+                </button>
+              </div>
+
+              {/* 컨텐츠 */}
+              <div className="px-5 pb-5 space-y-4">
+                <div>
+                  <label className="text-xs font-bold text-neutral-500 mb-2 block">
+                    자소서 문항
+                  </label>
+                  <textarea
+                    value={coverLetterPrompt}
+                    onChange={(e) => setCoverLetterPrompt(e.target.value)}
+                    rows={6}
+                    className="w-full p-3 border border-neutral-200 rounded-xl text-xs leading-relaxed resize-none focus:outline-none focus:border-neutral-400"
+                  />
+                </div>
+
+                <a
+                  href="/resume"
+                  className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-transform duration-150 active:scale-[0.98]"
+                >
+                  <FileText size={16} /> 생성하기
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
