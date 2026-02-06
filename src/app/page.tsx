@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Github,
   Bot,
@@ -12,6 +14,25 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <>
+      {/* Quick Write */}
+      <section className="px-5 pt-4 pb-2">
+        <div className="flex items-start gap-3 px-4 py-3.5 bg-neutral-50 rounded-2xl">
+          <div className="w-9 h-9 bg-neutral-900 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+            <PencilLine size={15} className="text-white" />
+          </div>
+          <textarea
+            placeholder="오늘은 어떤 경험을 했나요?"
+            rows={1}
+            className="flex-1 bg-transparent text-sm leading-relaxed resize-none outline-none placeholder:text-neutral-400 overflow-hidden"
+            onInput={(e) => {
+              const el = e.currentTarget;
+              el.style.height = "auto";
+              el.style.height = el.scrollHeight + "px";
+            }}
+          />
+        </div>
+      </section>
+
       {/* AI Question Card */}
       <section className="py-4">
         <div className="flex items-center gap-2 mb-4 px-5">
