@@ -4,11 +4,7 @@ import {
   Github,
   Bot,
   MessageSquareMore,
-  Code,
-  Users,
   ChevronRight,
-  User,
-  PencilLine,
 } from "lucide-react";
 import Link from "next/link";
 export default function HomePage() {
@@ -19,7 +15,7 @@ export default function HomePage() {
         <div className="px-4 py-3.5 bg-neutral-50 rounded-2xl">
           <textarea
             placeholder="오늘은 어떤 경험을 하셨나요?"
-            rows={2}
+            rows={3}
             className="w-full bg-transparent text-sm leading-relaxed resize-none outline-none placeholder:text-neutral-400 overflow-hidden"
             onInput={(e) => {
               const el = e.currentTarget;
@@ -172,16 +168,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Floating Action Button */}
-      <div className="fixed bottom-24 z-50 w-full max-w-[390px] left-1/2 -translate-x-1/2 pointer-events-none">
-        <Link
-          href="/write"
-          className="absolute bottom-0 right-4 w-14 h-14 bg-neutral-900 rounded-full shadow-lg flex items-center justify-center text-white pointer-events-auto"
-        >
-          <PencilLine size={22} />
-        </Link>
-      </div>
     </>
   );
 }
