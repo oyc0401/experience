@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Github, PenTool, CalendarCheck, Plus, X, Check, Slack, Trello, Figma, FileText } from "lucide-react";
+import { Github, PenTool, CalendarCheck, Plus, X, Check, Slack, Trello, Figma, FileText, User } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 interface Integration {
@@ -28,10 +28,23 @@ export default function ProfilePage() {
   return (
     <>
       <div className="p-6">
-        <h1 className="text-2xl font-bold">마이페이지</h1>
-        <p className="mt-2 text-gray-500">프로필 페이지입니다.</p>
+        {/* 프로필 카드 */}
+        <div className="flex items-center gap-4 p-5 bg-neutral-50 rounded-2xl mb-8">
+          <div className="w-14 h-14 bg-neutral-200 rounded-full flex items-center justify-center">
+            <User size={24} className="text-neutral-500" />
+          </div>
+          <div className="flex-1">
+            <h2 className="font-bold text-base">지디지</h2>
+            <p className="text-[11px] text-neutral-400 mt-0.5">gdg@email.com</p>
+            <div className="flex gap-3 mt-2">
+              <span className="text-[11px] text-neutral-500"><strong className="text-neutral-900">12</strong> 경험</span>
+              <span className="text-[11px] text-neutral-500"><strong className="text-neutral-900">3</strong> 연동</span>
+              <span className="text-[11px] text-neutral-500"><strong className="text-neutral-900">8</strong> 답변</span>
+            </div>
+          </div>
+        </div>
 
-        <section className="mt-8">
+        <section>
           <div className="flex justify-between items-center mb-4">
             <h2 className="font-bold text-base">실시간 연동 상태</h2>
             <span className="text-xs text-neutral-400">2025.05 업데이트</span>

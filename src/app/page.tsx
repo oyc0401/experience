@@ -5,43 +5,13 @@ import {
   Code,
   Users,
   ChevronRight,
-  Plus,
   User,
+  PencilLine,
 } from "lucide-react";
 import Link from "next/link";
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="px-5 py-8 bg-neutral-50">
-        <h1 className="text-2xl font-bold leading-tight mb-3">
-          당신의 모든 경험을 AI가 질문하고,
-          <br />
-          답변은 면접 무기가 됩니다.
-        </h1>
-        <p className="text-neutral-500 text-sm mb-6">
-          연동된 채널에서 새로운 활동이 감지되면
-          <br />
-          AI가 질문을 던져 당신의 성장을 기록합니다.
-        </p>
-        <div className="flex gap-2 items-center">
-          <div className="flex -space-x-2">
-            <div className="w-8 h-8 rounded-full border-2 border-white bg-neutral-200 flex items-center justify-center">
-              <User size={14} className="text-neutral-500" />
-            </div>
-            <div className="w-8 h-8 rounded-full border-2 border-white bg-neutral-200 flex items-center justify-center">
-              <User size={14} className="text-neutral-500" />
-            </div>
-            <div className="w-8 h-8 rounded-full border-2 border-white bg-neutral-200 flex items-center justify-center">
-              <User size={14} className="text-neutral-500" />
-            </div>
-          </div>
-          <span className="text-xs text-neutral-400 ml-2">
-            3,420명의 취준생이 기록 중
-          </span>
-        </div>
-      </section>
-
       {/* AI Question Card */}
       <section className="py-4">
         <div className="flex items-center gap-2 mb-4 px-5">
@@ -51,7 +21,7 @@ export default function HomePage() {
           </span>
         </div>
 
-        <div className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pl-5 pr-5 scrollbar-hide pb-1">
+        <div className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pl-5 pr-5 scrollbar-hide pb-1" style={{ scrollPaddingLeft: "20px" }}>
           {/* Card 1 */}
           <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm shrink-0 w-[85%] snap-start">
             <div className="flex items-center gap-2 mb-3">
@@ -60,9 +30,11 @@ export default function HomePage() {
               </div>
               <span className="text-neutral-300 text-[10px]">2시간 전</span>
             </div>
-            <h3 className="font-bold text-sm mb-1">
-              Refactor: Auth logic optimization
-            </h3>
+            <Link href="/experience/app-dev/refactor-auth-logic">
+              <h3 className="font-bold text-sm mb-1">
+                Refactor: Auth logic optimization
+              </h3>
+            </Link>
 
             <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100 mb-4">
               <div className="flex gap-2 mb-2">
@@ -94,9 +66,11 @@ export default function HomePage() {
               </div>
               <span className="text-neutral-300 text-[10px]">1일 전</span>
             </div>
-            <h3 className="font-bold text-sm mb-1">
-              Feat: 경험 기록 API 연동
-            </h3>
+            <Link href="/experience/app-dev">
+              <h3 className="font-bold text-sm mb-1">
+                Feat: 경험 기록 API 연동
+              </h3>
+            </Link>
 
             <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100 mb-4">
               <div className="flex gap-2 mb-2">
@@ -167,7 +141,7 @@ export default function HomePage() {
           href="/write"
           className="absolute bottom-0 right-4 w-14 h-14 bg-neutral-900 rounded-full shadow-lg flex items-center justify-center text-white pointer-events-auto"
         >
-          <Plus size={24} />
+          <PencilLine size={22} />
         </Link>
       </div>
     </>
