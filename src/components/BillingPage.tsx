@@ -16,7 +16,7 @@ export default function BillingPage() {
           <span className="text-xs font-medium text-neutral-400">현재 플랜</span>
         </div>
         <h2 className="text-xl font-bold mb-1">Pro Plan</h2>
-        <p className="text-sm text-neutral-400">월 $20 · 다음 결제일 2월 28일</p>
+        <p className="text-sm text-neutral-400">월 ₩19,000 · 다음 결제일 2월 28일</p>
       </div>
 
       {/* 주간 사용량 */}
@@ -69,7 +69,7 @@ export default function BillingPage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-bold text-white bg-neutral-900 px-2 py-0.5 rounded-full">현재</span>
-                <span className="text-sm font-bold">$20</span>
+                <span className="text-sm font-bold">₩19,000</span>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function BillingPage() {
                 <p className="text-sm font-bold">Max</p>
                 <p className="text-[11px] text-neutral-400 mt-0.5">Pro 대비 5배 토큰</p>
               </div>
-              <span className="text-sm font-bold">$100</span>
+              <span className="text-sm font-bold">₩99,000</span>
             </div>
           </div>
         </div>
