@@ -4,6 +4,7 @@ import {
   type QuestionSummaryDto,
   type QuestionListResponse,
 } from "@/api/generated";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function useQuestions() {
   const query = useGetQuestions();
@@ -17,5 +18,12 @@ export function useQuestions() {
 }
 
 export function useAnswerQuestionMutation() {
-  return useAnswerQuestion();
+  const queryClient = useQueryClient();
+  return useAnswerQuestion({
+    mutation: {
+      onSettled: () => {
+        queryClient.invalidateQueries();
+      },
+    },
+  });
 }

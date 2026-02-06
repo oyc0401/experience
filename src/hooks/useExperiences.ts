@@ -9,6 +9,7 @@ import {
   type ExperienceListResponse,
   type ExperienceDetailResponse,
 } from "@/api/generated";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function useFolders() {
   const query = useGetFolders();
@@ -46,5 +47,12 @@ export function useExperienceDetail(experienceId: number) {
 }
 
 export function useCreateExperienceMutation() {
-  return useCreateExperience();
+  const queryClient = useQueryClient();
+  return useCreateExperience({
+    mutation: {
+      onSettled: () => {
+        queryClient.invalidateQueries();
+      },
+    },
+  });
 }
