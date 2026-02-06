@@ -6,8 +6,8 @@ import {
   Users,
   ChevronRight,
   Plus,
+  User,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 export default function HomePage() {
   return (
@@ -26,27 +26,15 @@ export default function HomePage() {
         </p>
         <div className="flex gap-2 items-center">
           <div className="flex -space-x-2">
-            <Image
-              src="https://api.dicebear.com/9.x/notionists/svg?scale=200&seed=12"
-              className="rounded-full border-2 border-white bg-neutral-200"
-              width={32}
-              height={32}
-              alt="user"
-            />
-            <Image
-              src="https://api.dicebear.com/9.x/notionists/svg?scale=200&seed=45"
-              className="rounded-full border-2 border-white bg-neutral-200"
-              width={32}
-              height={32}
-              alt="user"
-            />
-            <Image
-              src="https://api.dicebear.com/9.x/notionists/svg?scale=200&seed=89"
-              className="rounded-full border-2 border-white bg-neutral-200"
-              width={32}
-              height={32}
-              alt="user"
-            />
+            <div className="w-8 h-8 rounded-full border-2 border-white bg-neutral-200 flex items-center justify-center">
+              <User size={14} className="text-neutral-500" />
+            </div>
+            <div className="w-8 h-8 rounded-full border-2 border-white bg-neutral-200 flex items-center justify-center">
+              <User size={14} className="text-neutral-500" />
+            </div>
+            <div className="w-8 h-8 rounded-full border-2 border-white bg-neutral-200 flex items-center justify-center">
+              <User size={14} className="text-neutral-500" />
+            </div>
           </div>
           <span className="text-xs text-neutral-400 ml-2">
             3,420명의 취준생이 기록 중
@@ -144,13 +132,14 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-3">
-          <Link href="/experience/app-dev" className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl">
+          <Link href="/experience/app-dev/refactor-auth-logic" className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl">
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
-              <Code size={18} />
+              <Github size={18} />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-bold">경험기록앱 개발</h4>
-              <p className="text-[11px] text-neutral-400">2025.05.12 저장됨</p>
+              <h4 className="text-sm font-bold">Refactor: Auth logic optimization</h4>
+              <p className="text-[11px] text-neutral-400 mt-0.5">인증 로직 리팩토링 및 성능 최적화</p>
+              <p className="text-[10px] text-neutral-300 mt-1">2025.05.14</p>
             </div>
             <div className="text-neutral-300">
               <ChevronRight size={14} />
@@ -158,11 +147,12 @@ export default function HomePage() {
           </Link>
           <div className="flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl">
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
-              <Users size={18} />
+              <Github size={18} />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-bold">버거킹 알바</h4>
-              <p className="text-[11px] text-neutral-400">2025.05.08 저장됨</p>
+              <h4 className="text-sm font-bold">Feat: 경험 기록 API 연동</h4>
+              <p className="text-[11px] text-neutral-400 mt-0.5">경험 데이터를 저장하는 REST API 연동 구현</p>
+              <p className="text-[10px] text-neutral-300 mt-1">2025.05.12</p>
             </div>
             <div className="text-neutral-300">
               <ChevronRight size={14} />
