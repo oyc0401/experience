@@ -20,11 +20,17 @@ import type { LucideIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 import type { FolderItemDtoFolderType } from "@/api/generated";
-import { useExperienceDetail, useExperiencesByFolder, useFolders } from "@/hooks/useExperiences";
+import {
+  useExperienceDetail,
+  useExperiencesByFolder,
+  useFolders,
+} from "@/hooks/useExperiences";
 import { useExperienceStore } from "@/stores/experience";
 import { useSearchStore } from "@/stores/search";
 
-function folderTypeIcon(folderType?: FolderItemDtoFolderType | string): LucideIcon {
+function folderTypeIcon(
+  folderType?: FolderItemDtoFolderType | string,
+): LucideIcon {
   switch (folderType) {
     case "DEVELOPMENT":
       return Code;
@@ -43,7 +49,13 @@ function folderTypeIcon(folderType?: FolderItemDtoFolderType | string): LucideIc
   }
 }
 
-function SourceTypeIcon({ sourceType, size }: { sourceType?: string; size: number }) {
+function SourceTypeIcon({
+  sourceType,
+  size,
+}: {
+  sourceType?: string;
+  size: number;
+}) {
   switch (sourceType) {
     case "GITHUB":
       return <Code size={size} />;
@@ -73,19 +85,31 @@ const markdownComponents = {
     <p className="text-xs text-neutral-600 leading-relaxed mb-2">{children}</p>
   ),
   ul: ({ children }: { children?: React.ReactNode }) => (
-    <ul className="text-xs text-neutral-600 space-y-0.5 mb-2 pl-3.5 list-disc">{children}</ul>
+    <ul className="text-xs text-neutral-600 space-y-0.5 mb-2 pl-3.5 list-disc">
+      {children}
+    </ul>
   ),
   li: ({ children }: { children?: React.ReactNode }) => (
     <li className="leading-relaxed">{children}</li>
   ),
-  code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
+  code: ({
+    children,
+    className,
+  }: {
+    children?: React.ReactNode;
+    className?: string;
+  }) => {
     if (className?.includes("language-")) {
       return (
-        <code className="block bg-neutral-50 border border-neutral-100 rounded-lg p-3 text-[11px] overflow-x-auto">{children}</code>
+        <code className="block bg-neutral-50 border border-neutral-100 rounded-lg p-3 text-[11px] overflow-x-auto">
+          {children}
+        </code>
       );
     }
     return (
-      <code className="bg-neutral-100 px-1 py-0.5 rounded text-[11px]">{children}</code>
+      <code className="bg-neutral-100 px-1 py-0.5 rounded text-[11px]">
+        {children}
+      </code>
     );
   },
   pre: ({ children }: { children?: React.ReactNode }) => (
@@ -107,19 +131,31 @@ const articleMarkdownComponents = {
     <p className="text-sm text-neutral-700 leading-relaxed mb-3">{children}</p>
   ),
   ul: ({ children }: { children?: React.ReactNode }) => (
-    <ul className="text-sm text-neutral-700 space-y-1 mb-3 pl-4 list-disc">{children}</ul>
+    <ul className="text-sm text-neutral-700 space-y-1 mb-3 pl-4 list-disc">
+      {children}
+    </ul>
   ),
   li: ({ children }: { children?: React.ReactNode }) => (
     <li className="leading-relaxed">{children}</li>
   ),
-  code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
+  code: ({
+    children,
+    className,
+  }: {
+    children?: React.ReactNode;
+    className?: string;
+  }) => {
     if (className?.includes("language-")) {
       return (
-        <code className="block bg-neutral-50 border border-neutral-100 rounded-xl p-4 text-xs overflow-x-auto">{children}</code>
+        <code className="block bg-neutral-50 border border-neutral-100 rounded-xl p-4 text-xs overflow-x-auto">
+          {children}
+        </code>
       );
     }
     return (
-      <code className="bg-neutral-100 px-1.5 py-0.5 rounded text-xs">{children}</code>
+      <code className="bg-neutral-100 px-1.5 py-0.5 rounded text-xs">
+        {children}
+      </code>
     );
   },
   pre: ({ children }: { children?: React.ReactNode }) => (
@@ -165,7 +201,10 @@ function ExperienceListView() {
               <button
                 type="button"
                 key={folder.folderId}
-                onClick={() => folder.folderId != null && setPostId(folder.folderId, folder.name ?? "")}
+                onClick={() =>
+                  folder.folderId != null &&
+                  setPostId(folder.folderId, folder.name ?? "")
+                }
                 className="w-full flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl transition-transform duration-150 active:scale-[0.98] text-left"
               >
                 <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
@@ -174,7 +213,9 @@ function ExperienceListView() {
                 <div className="flex-1">
                   <h4 className="text-sm font-bold">{folder.name}</h4>
                   <p className="text-[11px] text-neutral-400">
-                    {folder.updatedAt ? `${formatDate(folder.updatedAt)} 저장됨` : ""}
+                    {folder.updatedAt
+                      ? `${formatDate(folder.updatedAt)} 저장됨`
+                      : ""}
                   </p>
                 </div>
                 <div className="text-neutral-300">
@@ -201,14 +242,16 @@ function ExperienceDetailView() {
   const postId = useExperienceStore((s) => s.postId);
   const postTitle = useExperienceStore((s) => s.postTitle);
   const setArticleId = useExperienceStore((s) => s.setArticleId);
-  const { data: experiences, isLoading } = useExperiencesByFolder(postId as number);
+  const { data: experiences, isLoading } = useExperiencesByFolder(
+    postId as number,
+  );
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
     const list = experiences.filter(
       (exp) =>
         (exp.title ?? "").toLowerCase().includes(q) ||
-        (exp.summary ?? "").toLowerCase().includes(q),
+        (exp.content ?? "").toLowerCase().includes(q),
     );
     return [...list].sort((a, b) => {
       const aDate = a.createdAt ?? "";
@@ -241,41 +284,43 @@ function ExperienceDetailView() {
       <h1 className="font-bold text-lg mb-3">{postTitle}</h1>
       <div className="-mx-5">
         {filtered.map((exp, i) => (
-            <article key={exp.experienceId}>
-              {i > 0 && <div className="h-4 bg-neutral-100" />}
-              <div className="px-5 py-5">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-9 h-9 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400 shrink-0">
-                      <SourceTypeIcon sourceType={exp.sourceType} size={16} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-bold truncate">{exp.title}</h3>
-                    </div>
+          <article key={exp.experienceId}>
+            {i > 0 && <div className="h-4 bg-neutral-100" />}
+            <div className="px-5 py-5">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400 shrink-0">
+                    <SourceTypeIcon sourceType={exp.sourceType} size={16} />
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => exp.experienceId != null && setArticleId(exp.experienceId)}
-                    className="flex items-center gap-1 text-xs text-neutral-500 bg-neutral-100 px-3 py-1.5 rounded-full shrink-0 ml-3"
-                  >
-                    <Pencil size={12} />
-                    수정하기
-                  </button>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-bold truncate">{exp.title}</h3>
+                  </div>
                 </div>
-
-                {exp.summary && (
-                  <div>
-                    <ReactMarkdown components={markdownComponents}>
-                      {exp.summary}
-                    </ReactMarkdown>
-                  </div>
-                )}
-
-                <p className="text-right text-[11px] text-neutral-400 mt-4">
-                  {formatDate(exp.createdAt)}
-                </p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    exp.experienceId != null && setArticleId(exp.experienceId)
+                  }
+                  className="flex items-center gap-1 text-xs text-neutral-500 bg-neutral-100 px-3 py-1.5 rounded-full shrink-0 ml-3"
+                >
+                  <Pencil size={12} />
+                  수정하기
+                </button>
               </div>
-            </article>
+
+              {exp.content && (
+                <div>
+                  <ReactMarkdown components={markdownComponents}>
+                    {exp.content}
+                  </ReactMarkdown>
+                </div>
+              )}
+
+              <p className="text-right text-[11px] text-neutral-400 mt-4">
+                {formatDate(exp.createdAt)}
+              </p>
+            </div>
+          </article>
         ))}
         {filtered.length === 0 && (
           <p className="text-sm text-neutral-400 text-center py-8">
@@ -311,7 +356,11 @@ function ArticleEditView() {
   return <ArticleEditor detail={detail} />;
 }
 
-function ArticleEditor({ detail }: { detail: import("@/api/generated").ExperienceDetailResponse }) {
+function ArticleEditor({
+  detail,
+}: {
+  detail: import("@/api/generated").ExperienceDetailResponse;
+}) {
   const [content, setContent] = useState(detail.content ?? "");
   const [preview, setPreview] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -337,7 +386,9 @@ function ArticleEditor({ detail }: { detail: import("@/api/generated").Experienc
         <div>
           <h1 className="text-lg font-bold leading-tight">{detail.title}</h1>
           <div className="flex items-center gap-2 mt-0.5">
-            <p className="text-[11px] text-neutral-400">{formatDate(detail.createdAt)}</p>
+            <p className="text-[11px] text-neutral-400">
+              {formatDate(detail.createdAt)}
+            </p>
           </div>
         </div>
       </div>
@@ -376,7 +427,7 @@ export default function ExperiencePage() {
   const postId = useExperienceStore((s) => s.postId);
   const articleId = useExperienceStore((s) => s.articleId);
 
-  if (postId && articleId) return <ArticleEditView />;
+  if (articleId) return <ArticleEditView />;
   if (postId) return <ExperienceDetailView />;
   return <ExperienceListView />;
 }

@@ -27,11 +27,11 @@ export function usePageSubView(pageId: PageId) {
       };
     case "experience":
       return {
-        hasSubView: postId !== null,
+        hasSubView: postId !== null || articleId !== null,
         resetSubView: () => {
           if (articleId) {
             setArticleId(null);
-          } else {
+          } else if (postId) {
             setPostId(null);
             setQuery("");
           }

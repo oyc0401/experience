@@ -11,7 +11,10 @@ import {
   PenTool,
 } from "lucide-react";
 
-import type { ExperienceSummaryDtoSourceType, QuestionSummaryDtoSourceType } from "@/api/generated";
+import type {
+  ExperienceSummaryDtoSourceType,
+  QuestionSummaryDtoSourceType,
+} from "@/api/generated";
 import ExperiencePage from "@/app/experience/page";
 import ProfilePage from "@/app/profile/page";
 import { useCreateExperienceMutation } from "@/hooks/useExperiences";
@@ -21,7 +24,12 @@ import { useExperienceStore } from "@/stores/experience";
 import { useHomeStore } from "@/stores/home";
 import { useNavigationStore } from "@/stores/navigation";
 
-function sourceTypeIcon(sourceType?: QuestionSummaryDtoSourceType | ExperienceSummaryDtoSourceType | string) {
+function sourceTypeIcon(
+  sourceType?:
+    | QuestionSummaryDtoSourceType
+    | ExperienceSummaryDtoSourceType
+    | string,
+) {
   switch (sourceType) {
     case "GITHUB":
       return <Github size={10} />;
@@ -34,7 +42,12 @@ function sourceTypeIcon(sourceType?: QuestionSummaryDtoSourceType | ExperienceSu
   }
 }
 
-function sourceTypeLabel(sourceType?: QuestionSummaryDtoSourceType | ExperienceSummaryDtoSourceType | string) {
+function sourceTypeLabel(
+  sourceType?:
+    | QuestionSummaryDtoSourceType
+    | ExperienceSummaryDtoSourceType
+    | string,
+) {
   switch (sourceType) {
     case "GITHUB":
       return "GitHub 감지";
@@ -49,7 +62,9 @@ function sourceTypeLabel(sourceType?: QuestionSummaryDtoSourceType | ExperienceS
   }
 }
 
-function sourceTypeIconLarge(sourceType?: ExperienceSummaryDtoSourceType | string) {
+function sourceTypeIconLarge(
+  sourceType?: ExperienceSummaryDtoSourceType | string,
+) {
   switch (sourceType) {
     case "GITHUB":
       return <Github size={18} />;
@@ -126,7 +141,9 @@ function HistoryView() {
               <p className="text-[11px] text-neutral-400 mt-0.5">
                 {exp.summary}
               </p>
-              <p className="text-[10px] text-neutral-300 mt-1">{formatDate(exp.createdAt)}</p>
+              <p className="text-[10px] text-neutral-300 mt-1">
+                {formatDate(exp.createdAt)}
+              </p>
             </div>
             <div className="text-neutral-300">
               <ChevronRight size={14} />
@@ -145,7 +162,8 @@ function HomeContent() {
   const homeSubView = useHomeStore((s) => s.subView);
 
   const { data: questions, isLoading: questionsLoading } = useQuestions();
-  const { data: recentExperiences, isLoading: recentLoading } = useRecentExperiences(5);
+  const { data: recentExperiences, isLoading: recentLoading } =
+    useRecentExperiences(5);
   const createMutation = useCreateExperienceMutation();
   const answerMutation = useAnswerQuestionMutation();
 
@@ -238,19 +256,29 @@ function HomeContent() {
                 key={q.questionId}
                 className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm shrink-0 w-[85%] snap-start"
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="px-2 py-1 bg-neutral-100 rounded text-[10px] font-medium flex items-center gap-1">
-                    {sourceTypeIcon(q.sourceType)} {sourceTypeLabel(q.sourceType)}
+                <button
+                  type="button"
+                  onClick={() => q.experienceId && goToArticle(q.experienceId)}
+                  className="w-full text-left mb-1"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="px-2 py-1 bg-neutral-100 rounded text-[10px] font-medium flex items-center gap-1">
+                      {sourceTypeIcon(q.sourceType)}{" "}
+                      {sourceTypeLabel(q.sourceType)}
+                    </div>
+                    <span className="text-neutral-300 text-[10px]">
+                      {timeAgo(q.createdAt)}
+                    </span>
                   </div>
-                  <span className="text-neutral-300 text-[10px]">
-                    {timeAgo(q.createdAt)}
-                  </span>
-                </div>
-                <h3 className="font-bold text-sm mb-1 text-left">{q.title}</h3>
+                  <h3 className="font-bold text-sm text-left">{q.title}</h3>
+                </button>
 
                 <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100 mb-4">
                   <div className="flex gap-2 mb-2">
-                    <Bot className="text-neutral-400 mt-0.5 shrink-0" size={14} />
+                    <Bot
+                      className="text-neutral-400 mt-0.5 shrink-0"
+                      size={14}
+                    />
                     <p className="text-xs leading-relaxed font-medium">
                       &ldquo;{q.content}&rdquo;
                     </p>
@@ -261,7 +289,10 @@ function HomeContent() {
                   placeholder="이 경험에 대한 답변을 작성해 보세요..."
                   className="w-full p-3 border border-neutral-200 rounded-xl text-sm leading-relaxed resize-none focus:outline-none focus:border-neutral-400 mb-3"
                   rows={3}
-                  value={(q.questionId != null ? answerTexts[q.questionId] : "") ?? ""}
+                  value={
+                    (q.questionId != null ? answerTexts[q.questionId] : "") ??
+                    ""
+                  }
                   onChange={(e) => {
                     if (q.questionId == null) return;
                     setAnswerTexts((prev) => ({
@@ -273,12 +304,19 @@ function HomeContent() {
 
                 <button
                   type="button"
-                  onClick={() => q.questionId != null && handleAnswer(q.questionId)}
-                  disabled={answerMutation.isPending || !(q.questionId != null && answerTexts[q.questionId]?.trim())}
+                  onClick={() =>
+                    q.questionId != null && handleAnswer(q.questionId)
+                  }
+                  disabled={
+                    answerMutation.isPending ||
+                    !(q.questionId != null && answerTexts[q.questionId]?.trim())
+                  }
                   className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-transform duration-150 active:scale-[0.98] disabled:opacity-50"
                 >
                   <MessageSquareMore size={16} />{" "}
-                  {answerMutation.isPending ? "답변 중..." : "답변하고 기록하기"}
+                  {answerMutation.isPending
+                    ? "답변 중..."
+                    : "답변하고 기록하기"}
                 </button>
               </div>
             ))}
@@ -313,7 +351,9 @@ function HomeContent() {
               <button
                 type="button"
                 key={exp.experienceId}
-                onClick={() => exp.experienceId && goToArticle(exp.experienceId)}
+                onClick={() =>
+                  exp.experienceId && goToArticle(exp.experienceId)
+                }
                 className="w-full flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl text-left"
               >
                 <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">

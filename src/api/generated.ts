@@ -44,6 +44,7 @@ export const QuestionSummaryDtoSourceType = {
 
 export interface QuestionSummaryDto {
   questionId?: number;
+  experienceId?: number;
   sourceType?: QuestionSummaryDtoSourceType;
   title?: string;
   content?: string;
@@ -108,6 +109,7 @@ export interface ExperienceSummaryDto {
   sourceUrl?: string;
   title?: string;
   summary?: string;
+  content?: string;
   createdAt?: string;
 }
 
