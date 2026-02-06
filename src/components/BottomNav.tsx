@@ -2,39 +2,60 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, History, User } from "lucide-react";
+import { Home, Database, Plus, Sparkles, User } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "홈", icon: Home },
-  { href: "/history", label: "히스토리", icon: History },
-  { href: "/profile", label: "프로필", icon: User },
+  { href: "/knowledge", label: "지식DB", icon: Database },
+  { href: "/ai-generate", label: "AI 생성", icon: Sparkles },
+  { href: "/profile", label: "마이", icon: User },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
-      <ul className="flex h-16 items-center justify-around">
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const isActive = pathname === href;
-          return (
-            <li key={href}>
-              <Link
-                href={href}
-                className={`flex flex-col items-center gap-1 text-xs ${
+    <nav className="absolute bottom-0 left-0 right-0 h-20 bg-white border-t border-neutral-100 px-6 flex justify-between items-center z-50">
+      {navItems.map((item, index) => {
+        const isActive = pathname === item.href;
+        const Icon = item.icon;
+
+        return (
+          <span key={item.href}>
+            {index === 2 && (
+              <div className="relative -top-5">
+                <Link
+                  href="/record"
+                  className="w-14 h-14 bg-neutral-900 rounded-full shadow-lg flex items-center justify-center text-white border-4 border-white"
+                >
+                  <Plus size={24} />
+                </Link>
+              </div>
+            )}
+            <Link
+              href={item.href}
+              className="flex flex-col items-center gap-1"
+            >
+              <Icon
+                size={22}
+                className={
+                  isActive ? "text-neutral-900" : "text-neutral-300"
+                }
+                strokeWidth={isActive ? 2.5 : 1.5}
+              />
+              <span
+                className={`text-[10px] ${
                   isActive
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-gray-500 dark:text-gray-400"
+                    ? "font-bold text-neutral-900"
+                    : "font-medium text-neutral-400"
                 }`}
               >
-                <Icon size={24} strokeWidth={isActive ? 2.5 : 1.5} />
-                <span>{label}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+                {item.label}
+              </span>
+            </Link>
+          </span>
+        );
+      })}
     </nav>
   );
 }

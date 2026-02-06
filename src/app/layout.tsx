@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "My App",
-  description: "My App",
+  title: "ExpLog",
+  description: "당신의 모든 경험을 AI가 질문하고, 답변은 면접 무기가 됩니다.",
 };
 
 export default function RootLayout({
@@ -24,12 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <main className="pb-16">{children}</main>
-        <BottomNav />
+    <html lang="ko">
+      <body className="antialiased bg-neutral-100">
+        <div className="relative mx-auto w-full max-w-[390px] min-h-dvh bg-white text-neutral-900 shadow-2xl">
+          <main className="pb-24">{children}</main>
+          <BottomNav />
+        </div>
       </body>
     </html>
   );
