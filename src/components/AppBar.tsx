@@ -35,7 +35,7 @@ export default function AppBar() {
           </div>
           <span className="font-bold text-lg tracking-tight">ExpLog</span>
         </div>
-        <button className="relative" onClick={toggle}>
+        <button className="relative transition-transform duration-150 active:scale-95" onClick={toggle}>
           <Bell className="text-neutral-400" size={22} />
           <span className="absolute -top-1 -right-1 w-2 h-2 bg-neutral-900 rounded-full border-2 border-white" />
         </button>

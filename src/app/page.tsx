@@ -30,7 +30,7 @@ export default function HomePage() {
         </div>
         <button
           type="button"
-          className="px-5 py-2 bg-neutral-900 text-white text-sm font-medium rounded-lg ml-auto block mt-3"
+          className="px-5 py-2 bg-neutral-900 text-white text-sm font-medium rounded-lg ml-auto block mt-3 transition-transform duration-150 active:scale-[0.98]"
         >
           등록하기
         </button>
@@ -80,7 +80,7 @@ export default function HomePage() {
               rows={3}
             />
 
-            <button className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+            <button className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-transform duration-150 active:scale-[0.98]">
               <MessageSquareMore size={16} /> 답변하고 기록하기
             </button>
           </div>
@@ -115,7 +115,7 @@ export default function HomePage() {
               rows={3}
             />
 
-            <button className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+            <button className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-transform duration-150 active:scale-[0.98]">
               <MessageSquareMore size={16} /> 답변하고 기록하기
             </button>
           </div>

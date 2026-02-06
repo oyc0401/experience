@@ -35,7 +35,7 @@ export default function ExperiencePage() {
           <Link
             key={exp.title}
             href={exp.href}
-            className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl"
+            className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl transition-transform duration-150 active:scale-[0.98]"
           >
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
               <exp.icon size={18} />

@@ -76,7 +76,7 @@ export default function ProfilePage() {
         <section className="mt-8 space-y-2">
           <button
             onClick={() => router.push("/profile/billing")}
-            className="w-full flex items-center gap-3 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-colors"
+            className="w-full flex items-center gap-3 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-all duration-150 active:scale-[0.98]"
           >
             <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center">
               <CreditCard size={18} className="text-neutral-600" />
@@ -88,7 +88,7 @@ export default function ProfilePage() {
             <ChevronRight size={16} className="text-neutral-300" />
           </button>
 
-          <button className="w-full flex items-center gap-3 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-colors">
+          <button className="w-full flex items-center gap-3 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-all duration-150 active:scale-[0.98]">
             <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
               <LogOut size={18} className="text-red-400" />
             </div>
