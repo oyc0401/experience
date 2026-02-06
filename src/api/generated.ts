@@ -5,22 +5,894 @@
  * OpenAPI spec version: v0
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query';
 
 import { customFetch } from './client';
+export interface QuestionAnswerRequest {
+  answer: string;
+}
+
+export interface ExperienceSaveRequest {
+  input: string;
+}
+
+export type QuestionSummaryDtoSourceType = typeof QuestionSummaryDtoSourceType[keyof typeof QuestionSummaryDtoSourceType];
+
+
+export const QuestionSummaryDtoSourceType = {
+  GITHUB: 'GITHUB',
+  BLOG: 'BLOG',
+  NOTION: 'NOTION',
+  MANUAL: 'MANUAL',
+} as const;
+
+export interface QuestionSummaryDto {
+  questionId?: number;
+  sourceType?: QuestionSummaryDtoSourceType;
+  title?: string;
+  content?: string;
+  createdAt?: string;
+}
+
+export interface QuestionListResponse {
+  questions?: QuestionSummaryDto[];
+}
+
+export type FolderItemDtoFolderType = typeof FolderItemDtoFolderType[keyof typeof FolderItemDtoFolderType];
+
+
+export const FolderItemDtoFolderType = {
+  DEVELOPMENT: 'DEVELOPMENT',
+  EDUCATION: 'EDUCATION',
+  COMPETITION: 'COMPETITION',
+  PART_TIME: 'PART_TIME',
+  ACTIVITY: 'ACTIVITY',
+  BOOK: 'BOOK',
+  ETC: 'ETC',
+} as const;
+
+export interface FolderItemDto {
+  folderId?: number;
+  folderType?: FolderItemDtoFolderType;
+  name?: string;
+  updatedAt?: string;
+}
+
+export interface FolderListResponse {
+  folders?: FolderItemDto[];
+}
+
+export type ExperienceSummaryDtoExperienceType = typeof ExperienceSummaryDtoExperienceType[keyof typeof ExperienceSummaryDtoExperienceType];
+
+
+export const ExperienceSummaryDtoExperienceType = {
+  DEVELOPMENT: 'DEVELOPMENT',
+  EDUCATION: 'EDUCATION',
+  COMPETITION: 'COMPETITION',
+  PART_TIME: 'PART_TIME',
+  ACTIVITY: 'ACTIVITY',
+  BOOK: 'BOOK',
+  ETC: 'ETC',
+} as const;
+
+export type ExperienceSummaryDtoSourceType = typeof ExperienceSummaryDtoSourceType[keyof typeof ExperienceSummaryDtoSourceType];
+
+
+export const ExperienceSummaryDtoSourceType = {
+  GITHUB: 'GITHUB',
+  BLOG: 'BLOG',
+  NOTION: 'NOTION',
+  MANUAL: 'MANUAL',
+} as const;
+
+export interface ExperienceSummaryDto {
+  experienceId?: number;
+  experienceType?: ExperienceSummaryDtoExperienceType;
+  sourceType?: ExperienceSummaryDtoSourceType;
+  sourceUrl?: string;
+  title?: string;
+  summary?: string;
+  createdAt?: string;
+}
+
+export interface ExperienceListResponse {
+  experiences?: ExperienceSummaryDto[];
+}
+
+export type ExperienceDetailResponseExperienceType = typeof ExperienceDetailResponseExperienceType[keyof typeof ExperienceDetailResponseExperienceType];
+
+
+export const ExperienceDetailResponseExperienceType = {
+  DEVELOPMENT: 'DEVELOPMENT',
+  EDUCATION: 'EDUCATION',
+  COMPETITION: 'COMPETITION',
+  PART_TIME: 'PART_TIME',
+  ACTIVITY: 'ACTIVITY',
+  BOOK: 'BOOK',
+  ETC: 'ETC',
+} as const;
+
+export type ExperienceDetailResponseSourceType = typeof ExperienceDetailResponseSourceType[keyof typeof ExperienceDetailResponseSourceType];
+
+
+export const ExperienceDetailResponseSourceType = {
+  GITHUB: 'GITHUB',
+  BLOG: 'BLOG',
+  NOTION: 'NOTION',
+  MANUAL: 'MANUAL',
+} as const;
+
+export interface ExperienceDetailResponse {
+  experienceId?: number;
+  experienceType?: ExperienceDetailResponseExperienceType;
+  sourceType?: ExperienceDetailResponseSourceType;
+  sourceUrl?: string;
+  title?: string;
+  createdAt?: string;
+  content?: string;
+}
+
+export type GetExperiencesByFolderParams = {
+folderId: number;
+};
+
+export type GetRecentExperiencesParams = {
+size?: number;
+};
+
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+
+/**
+ * @summary AI 질문에 답변하기
+ */
+export type answerQuestionResponse200 = {
+  data: void
+  status: 200
+}
+    
+export type answerQuestionResponseSuccess = (answerQuestionResponse200) & {
+  headers: Headers;
+};
+;
+
+export type answerQuestionResponse = (answerQuestionResponseSuccess)
+
+export const getAnswerQuestionUrl = (questionId: number,) => {
+
+
+  
+
+  return `/api/questions/${questionId}/answer`
+}
+
+export const answerQuestion = async (questionId: number,
+    questionAnswerRequest: QuestionAnswerRequest, options?: RequestInit): Promise<answerQuestionResponse> => {
+  
+  return customFetch<answerQuestionResponse>(getAnswerQuestionUrl(questionId),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      questionAnswerRequest,)
+  }
+);}
+
+
+
+
+export const getAnswerQuestionMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof answerQuestion>>, TError,{questionId: number;data: QuestionAnswerRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof answerQuestion>>, TError,{questionId: number;data: QuestionAnswerRequest}, TContext> => {
+
+const mutationKey = ['answerQuestion'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof answerQuestion>>, {questionId: number;data: QuestionAnswerRequest}> = (props) => {
+          const {questionId,data} = props ?? {};
+
+          return  answerQuestion(questionId,data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AnswerQuestionMutationResult = NonNullable<Awaited<ReturnType<typeof answerQuestion>>>
+    export type AnswerQuestionMutationBody = QuestionAnswerRequest
+    export type AnswerQuestionMutationError = unknown
+
+    /**
+ * @summary AI 질문에 답변하기
+ */
+export const useAnswerQuestion = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof answerQuestion>>, TError,{questionId: number;data: QuestionAnswerRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof answerQuestion>>,
+        TError,
+        {questionId: number;data: QuestionAnswerRequest},
+        TContext
+      > => {
+      return useMutation(getAnswerQuestionMutationOptions(options), queryClient);
+    }
+    
+/**
+ * @summary 폴더별 경험 리스트 조회
+ */
+export type getExperiencesByFolderResponse200 = {
+  data: Blob
+  status: 200
+}
+    
+export type getExperiencesByFolderResponseSuccess = (getExperiencesByFolderResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getExperiencesByFolderResponse = (getExperiencesByFolderResponseSuccess)
+
+export const getGetExperiencesByFolderUrl = (params: GetExperiencesByFolderParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/experiences?${stringifiedParams}` : `/api/experiences`
+}
+
+export const getExperiencesByFolder = async (params: GetExperiencesByFolderParams, options?: RequestInit): Promise<getExperiencesByFolderResponse> => {
+  
+  return customFetch<getExperiencesByFolderResponse>(getGetExperiencesByFolderUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetExperiencesByFolderQueryKey = (params?: GetExperiencesByFolderParams,) => {
+    return [
+    `/api/experiences`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getGetExperiencesByFolderQueryOptions = <TData = Awaited<ReturnType<typeof getExperiencesByFolder>>, TError = unknown>(params: GetExperiencesByFolderParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperiencesByFolder>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetExperiencesByFolderQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExperiencesByFolder>>> = ({ signal }) => getExperiencesByFolder(params, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getExperiencesByFolder>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetExperiencesByFolderQueryResult = NonNullable<Awaited<ReturnType<typeof getExperiencesByFolder>>>
+export type GetExperiencesByFolderQueryError = unknown
+
+
+export function useGetExperiencesByFolder<TData = Awaited<ReturnType<typeof getExperiencesByFolder>>, TError = unknown>(
+ params: GetExperiencesByFolderParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperiencesByFolder>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExperiencesByFolder>>,
+          TError,
+          Awaited<ReturnType<typeof getExperiencesByFolder>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetExperiencesByFolder<TData = Awaited<ReturnType<typeof getExperiencesByFolder>>, TError = unknown>(
+ params: GetExperiencesByFolderParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperiencesByFolder>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExperiencesByFolder>>,
+          TError,
+          Awaited<ReturnType<typeof getExperiencesByFolder>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetExperiencesByFolder<TData = Awaited<ReturnType<typeof getExperiencesByFolder>>, TError = unknown>(
+ params: GetExperiencesByFolderParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperiencesByFolder>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 폴더별 경험 리스트 조회
+ */
+
+export function useGetExperiencesByFolder<TData = Awaited<ReturnType<typeof getExperiencesByFolder>>, TError = unknown>(
+ params: GetExperiencesByFolderParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperiencesByFolder>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetExperiencesByFolderQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+/**
+ * @summary 경험 수기 작성
+ */
+export type createExperienceResponse200 = {
+  data: void
+  status: 200
+}
+    
+export type createExperienceResponseSuccess = (createExperienceResponse200) & {
+  headers: Headers;
+};
+;
+
+export type createExperienceResponse = (createExperienceResponseSuccess)
+
+export const getCreateExperienceUrl = () => {
+
+
+  
+
+  return `/api/experiences`
+}
+
+export const createExperience = async (experienceSaveRequest: ExperienceSaveRequest, options?: RequestInit): Promise<createExperienceResponse> => {
+  
+  return customFetch<createExperienceResponse>(getCreateExperienceUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      experienceSaveRequest,)
+  }
+);}
+
+
+
+
+export const getCreateExperienceMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createExperience>>, TError,{data: ExperienceSaveRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createExperience>>, TError,{data: ExperienceSaveRequest}, TContext> => {
+
+const mutationKey = ['createExperience'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createExperience>>, {data: ExperienceSaveRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createExperience(data,requestOptions)
+        }
+
+
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateExperienceMutationResult = NonNullable<Awaited<ReturnType<typeof createExperience>>>
+    export type CreateExperienceMutationBody = ExperienceSaveRequest
+    export type CreateExperienceMutationError = unknown
+
+    /**
+ * @summary 경험 수기 작성
+ */
+export const useCreateExperience = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createExperience>>, TError,{data: ExperienceSaveRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof createExperience>>,
+        TError,
+        {data: ExperienceSaveRequest},
+        TContext
+      > => {
+      return useMutation(getCreateExperienceMutationOptions(options), queryClient);
+    }
+    
+/**
+ * @summary 답변을 기다리는 질문 리스트 조회
+ */
+export type getQuestionsResponse200 = {
+  data: Blob
+  status: 200
+}
+    
+export type getQuestionsResponseSuccess = (getQuestionsResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getQuestionsResponse = (getQuestionsResponseSuccess)
+
+export const getGetQuestionsUrl = () => {
+
+
+  
+
+  return `/api/questions`
+}
+
+export const getQuestions = async ( options?: RequestInit): Promise<getQuestionsResponse> => {
+  
+  return customFetch<getQuestionsResponse>(getGetQuestionsUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetQuestionsQueryKey = () => {
+    return [
+    `/api/questions`
+    ] as const;
+    }
+
+    
+export const getGetQuestionsQueryOptions = <TData = Awaited<ReturnType<typeof getQuestions>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getQuestions>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetQuestionsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getQuestions>>> = ({ signal }) => getQuestions({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getQuestions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetQuestionsQueryResult = NonNullable<Awaited<ReturnType<typeof getQuestions>>>
+export type GetQuestionsQueryError = unknown
+
+
+export function useGetQuestions<TData = Awaited<ReturnType<typeof getQuestions>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getQuestions>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getQuestions>>,
+          TError,
+          Awaited<ReturnType<typeof getQuestions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetQuestions<TData = Awaited<ReturnType<typeof getQuestions>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getQuestions>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getQuestions>>,
+          TError,
+          Awaited<ReturnType<typeof getQuestions>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetQuestions<TData = Awaited<ReturnType<typeof getQuestions>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getQuestions>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 답변을 기다리는 질문 리스트 조회
+ */
+
+export function useGetQuestions<TData = Awaited<ReturnType<typeof getQuestions>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getQuestions>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetQuestionsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+/**
+ * @summary 폴더 리스트 조회
+ */
+export type getFoldersResponse200 = {
+  data: Blob
+  status: 200
+}
+    
+export type getFoldersResponseSuccess = (getFoldersResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getFoldersResponse = (getFoldersResponseSuccess)
+
+export const getGetFoldersUrl = () => {
+
+
+  
+
+  return `/api/folders`
+}
+
+export const getFolders = async ( options?: RequestInit): Promise<getFoldersResponse> => {
+  
+  return customFetch<getFoldersResponse>(getGetFoldersUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetFoldersQueryKey = () => {
+    return [
+    `/api/folders`
+    ] as const;
+    }
+
+    
+export const getGetFoldersQueryOptions = <TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFoldersQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFolders>>> = ({ signal }) => getFolders({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetFoldersQueryResult = NonNullable<Awaited<ReturnType<typeof getFolders>>>
+export type GetFoldersQueryError = unknown
+
+
+export function useGetFolders<TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFolders>>,
+          TError,
+          Awaited<ReturnType<typeof getFolders>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFolders<TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFolders>>,
+          TError,
+          Awaited<ReturnType<typeof getFolders>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFolders<TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 폴더 리스트 조회
+ */
+
+export function useGetFolders<TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetFoldersQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+/**
+ * @summary 경험 상세 조회
+ */
+export type getExperienceDetailResponse200 = {
+  data: Blob
+  status: 200
+}
+    
+export type getExperienceDetailResponseSuccess = (getExperienceDetailResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getExperienceDetailResponse = (getExperienceDetailResponseSuccess)
+
+export const getGetExperienceDetailUrl = (experienceId: number,) => {
+
+
+  
+
+  return `/api/experiences/${experienceId}`
+}
+
+export const getExperienceDetail = async (experienceId: number, options?: RequestInit): Promise<getExperienceDetailResponse> => {
+  
+  return customFetch<getExperienceDetailResponse>(getGetExperienceDetailUrl(experienceId),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetExperienceDetailQueryKey = (experienceId: number,) => {
+    return [
+    `/api/experiences/${experienceId}`
+    ] as const;
+    }
+
+    
+export const getGetExperienceDetailQueryOptions = <TData = Awaited<ReturnType<typeof getExperienceDetail>>, TError = unknown>(experienceId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperienceDetail>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetExperienceDetailQueryKey(experienceId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExperienceDetail>>> = ({ signal }) => getExperienceDetail(experienceId, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(experienceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getExperienceDetail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetExperienceDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getExperienceDetail>>>
+export type GetExperienceDetailQueryError = unknown
+
+
+export function useGetExperienceDetail<TData = Awaited<ReturnType<typeof getExperienceDetail>>, TError = unknown>(
+ experienceId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperienceDetail>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExperienceDetail>>,
+          TError,
+          Awaited<ReturnType<typeof getExperienceDetail>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetExperienceDetail<TData = Awaited<ReturnType<typeof getExperienceDetail>>, TError = unknown>(
+ experienceId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperienceDetail>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExperienceDetail>>,
+          TError,
+          Awaited<ReturnType<typeof getExperienceDetail>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetExperienceDetail<TData = Awaited<ReturnType<typeof getExperienceDetail>>, TError = unknown>(
+ experienceId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperienceDetail>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 경험 상세 조회
+ */
+
+export function useGetExperienceDetail<TData = Awaited<ReturnType<typeof getExperienceDetail>>, TError = unknown>(
+ experienceId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExperienceDetail>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetExperienceDetailQueryOptions(experienceId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+/**
+ * @summary 최근 경험 리스트 조회 (Top 5)
+ */
+export type getRecentExperiencesResponse200 = {
+  data: Blob
+  status: 200
+}
+    
+export type getRecentExperiencesResponseSuccess = (getRecentExperiencesResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getRecentExperiencesResponse = (getRecentExperiencesResponseSuccess)
+
+export const getGetRecentExperiencesUrl = (params?: GetRecentExperiencesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/experiences/recent?${stringifiedParams}` : `/api/experiences/recent`
+}
+
+export const getRecentExperiences = async (params?: GetRecentExperiencesParams, options?: RequestInit): Promise<getRecentExperiencesResponse> => {
+  
+  return customFetch<getRecentExperiencesResponse>(getGetRecentExperiencesUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+
+export const getGetRecentExperiencesQueryKey = (params?: GetRecentExperiencesParams,) => {
+    return [
+    `/api/experiences/recent`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+    
+export const getGetRecentExperiencesQueryOptions = <TData = Awaited<ReturnType<typeof getRecentExperiences>>, TError = unknown>(params?: GetRecentExperiencesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRecentExperiences>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRecentExperiencesQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRecentExperiences>>> = ({ signal }) => getRecentExperiences(params, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRecentExperiences>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetRecentExperiencesQueryResult = NonNullable<Awaited<ReturnType<typeof getRecentExperiences>>>
+export type GetRecentExperiencesQueryError = unknown
+
+
+export function useGetRecentExperiences<TData = Awaited<ReturnType<typeof getRecentExperiences>>, TError = unknown>(
+ params: undefined |  GetRecentExperiencesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRecentExperiences>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRecentExperiences>>,
+          TError,
+          Awaited<ReturnType<typeof getRecentExperiences>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRecentExperiences<TData = Awaited<ReturnType<typeof getRecentExperiences>>, TError = unknown>(
+ params?: GetRecentExperiencesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRecentExperiences>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRecentExperiences>>,
+          TError,
+          Awaited<ReturnType<typeof getRecentExperiences>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRecentExperiences<TData = Awaited<ReturnType<typeof getRecentExperiences>>, TError = unknown>(
+ params?: GetRecentExperiencesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRecentExperiences>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary 최근 경험 리스트 조회 (Top 5)
+ */
+
+export function useGetRecentExperiences<TData = Awaited<ReturnType<typeof getRecentExperiences>>, TError = unknown>(
+ params?: GetRecentExperiencesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRecentExperiences>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetRecentExperiencesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
 
 
 

@@ -7,12 +7,11 @@ import { useNotificationStore } from "@/stores/notification";
 import { useSearchStore } from "@/stores/search";
 import { useExperienceStore, sortLabels, type SortOption } from "@/stores/experience";
 import { useNavigationStore } from "@/stores/navigation";
+import { useHomeStore } from "@/stores/home";
 import { useProfileStore } from "@/stores/profile";
 import { usePageSubView } from "@/hooks/usePageSubView";
 
-const pageTitles: Record<string, string> = {
-  "/history": "나의 최근 경험",
-};
+const pageTitles: Record<string, string> = {};
 
 const pageIdTitles: Record<string, string> = {
   experience: "내 경험",
@@ -30,6 +29,7 @@ export default function AppBar() {
   const { query, setQuery } = useSearchStore();
   const { postId, articleId, sort, setSort, showSortMenu, setShowSortMenu } = useExperienceStore();
   const pageId = useNavigationStore((s) => s.pageId);
+  const homeSubView = useHomeStore((s) => s.subView);
   const profileSubPage = useProfileStore((s) => s.subPage);
   const { hasSubView, resetSubView } = usePageSubView(pageId);
   const sortRef = useRef<HTMLDivElement>(null);
@@ -52,6 +52,8 @@ export default function AppBar() {
   let title = "";
   if (!isOnRoot) {
     title = pageTitles[pathname] ?? "";
+  } else if (pageId === "home" && homeSubView === "history") {
+    title = "나의 최근 경험";
   } else if (pageId === "experience" && articleId) {
     title = "경험 상세";
   } else if (pageId === "profile" && profileSubPage) {

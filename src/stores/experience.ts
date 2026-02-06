@@ -10,11 +10,11 @@ export const sortLabels: Record<SortOption, string> = {
 };
 
 interface ExperienceStore {
-  postId: string | null;
+  postId: number | null;
   postTitle: string;
-  setPostId: (postId: string | null, title?: string) => void;
-  articleId: string | null;
-  setArticleId: (articleId: string | null) => void;
+  setPostId: (postId: number | null, title?: string) => void;
+  articleId: number | null;
+  setArticleId: (articleId: number | null) => void;
   sort: SortOption;
   setSort: (sort: SortOption) => void;
   showSortMenu: boolean;

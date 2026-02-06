@@ -1,4 +1,5 @@
 import { useExperienceStore } from "@/stores/experience";
+import { useHomeStore } from "@/stores/home";
 import { useProfileStore } from "@/stores/profile";
 import { useSearchStore } from "@/stores/search";
 import type { PageId } from "@/stores/navigation";
@@ -8,6 +9,8 @@ import type { PageId } from "@/stores/navigation";
  * resetSubView는 가장 깊은 depth부터 한 단계씩 pop.
  */
 export function usePageSubView(pageId: PageId) {
+  const homeSubView = useHomeStore((s) => s.subView);
+  const setHomeSubView = useHomeStore((s) => s.setSubView);
   const postId = useExperienceStore((s) => s.postId);
   const setPostId = useExperienceStore((s) => s.setPostId);
   const articleId = useExperienceStore((s) => s.articleId);
@@ -17,6 +20,11 @@ export function usePageSubView(pageId: PageId) {
   const setProfileSubPage = useProfileStore((s) => s.setSubPage);
 
   switch (pageId) {
+    case "home":
+      return {
+        hasSubView: homeSubView !== null,
+        resetSubView: () => setHomeSubView(null),
+      };
     case "experience":
       return {
         hasSubView: postId !== null,

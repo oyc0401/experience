@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Providers from "@/components/Providers";
 import AppBar from "@/components/AppBar";
 import BottomNav from "@/components/BottomNav";
 import NotificationDialog from "@/components/NotificationDialog";
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="overflow-hidden antialiased bg-neutral-100">
-        <div id="main-scroll" className="mx-auto w-full max-w-[390px] h-dvh overflow-y-auto bg-white text-neutral-900 shadow-2xl">
-          <AppBar />
-          <main className="pb-24">{children}</main>
-        </div>
-        <NotificationDialog />
-        <BottomNav />
+        <Providers>
+          <div id="main-scroll" className="mx-auto w-full max-w-[390px] h-dvh overflow-y-auto bg-white text-neutral-900 shadow-2xl">
+            <AppBar />
+            <main className="pb-24">{children}</main>
+          </div>
+          <NotificationDialog />
+          <BottomNav />
+        </Providers>
       </body>
     </html>
   );
