@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Home, Database, User } from "lucide-react";
 import { useExperienceStore } from "@/stores/experience";
 import { useNavigationStore, type PageId } from "@/stores/navigation";
+import { useProfileStore } from "@/stores/profile";
 
 const navItems: { pageId: PageId; label: string; icon: typeof Home }[] = [
   { pageId: "home", label: "홈", icon: Home },
@@ -16,6 +17,8 @@ export default function BottomNav() {
   const router = useRouter();
   const { postId, setPostId } = useExperienceStore();
   const { pageId, setPageId, saveScroll } = useNavigationStore();
+  const profileSubPage = useProfileStore((s) => s.subPage);
+  const setProfileSubPage = useProfileStore((s) => s.setSubPage);
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[390px] h-20 bg-white border-t border-neutral-100 flex justify-around items-center z-50">
@@ -27,6 +30,10 @@ export default function BottomNav() {
           const container = document.getElementById("main-scroll");
 
           if (pathname === "/" && pageId === item.pageId) {
+            if (pageId === "profile" && profileSubPage) {
+              setProfileSubPage(null);
+              return;
+            }
             container?.scrollTo({ top: 0, behavior: "smooth" });
             return;
           }

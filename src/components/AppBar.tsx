@@ -7,16 +7,20 @@ import { useNotificationStore } from "@/stores/notification";
 import { useSearchStore } from "@/stores/search";
 import { useExperienceStore, sortLabels, type SortOption } from "@/stores/experience";
 import { useNavigationStore } from "@/stores/navigation";
+import { useProfileStore } from "@/stores/profile";
 
 const pageTitles: Record<string, string> = {
   "/experience/app-dev/refactor-auth-logic": "경험 상세",
   "/history": "나의 최근 경험",
-  "/profile/billing": "결제",
 };
 
 const pageIdTitles: Record<string, string> = {
   experience: "내 경험",
   profile: "마이페이지",
+};
+
+const profileSubPageTitles: Record<string, string> = {
+  billing: "결제",
 };
 
 export default function AppBar() {
@@ -26,6 +30,8 @@ export default function AppBar() {
   const { query, setQuery } = useSearchStore();
   const { postId, setPostId, sort, setSort, showSortMenu, setShowSortMenu } = useExperienceStore();
   const pageId = useNavigationStore((s) => s.pageId);
+  const profileSubPage = useProfileStore((s) => s.subPage);
+  const setProfileSubPage = useProfileStore((s) => s.setSubPage);
   const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,11 +47,21 @@ export default function AppBar() {
 
   const isOnRoot = pathname === "/";
   const isMainTab = isOnRoot && ["home", "experience", "profile"].includes(pageId);
-  const isHome = isMainTab && !(pageId === "experience" && postId);
+  const hasSubPage = (pageId === "experience" && postId) || (pageId === "profile" && profileSubPage);
+  const isHome = isMainTab && !hasSubPage;
   const showSearch = isOnRoot && pageId === "experience" && postId !== null;
 
   const isExperiencePage = isOnRoot && pageId === "experience";
-  const title = isOnRoot ? (pageIdTitles[pageId] ?? "") : (pageTitles[pathname] ?? "");
+  const isProfileSubPage = isOnRoot && pageId === "profile" && profileSubPage;
+
+  let title = "";
+  if (!isOnRoot) {
+    title = pageTitles[pathname] ?? "";
+  } else if (isProfileSubPage) {
+    title = profileSubPageTitles[profileSubPage] ?? "";
+  } else {
+    title = pageIdTitles[pageId] ?? "";
+  }
 
   if (isHome) {
     return (
@@ -68,6 +84,8 @@ export default function AppBar() {
     if (isExperiencePage && postId) {
       setPostId(null);
       setQuery("");
+    } else if (isOnRoot && pageId === "profile" && profileSubPage) {
+      setProfileSubPage(null);
     } else {
       router.back();
     }

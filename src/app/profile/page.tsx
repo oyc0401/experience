@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Github, PenTool, CalendarCheck, Plus, X, Check, Slack, Trello, Figma, FileText, User, CreditCard, LogOut, ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useProfileStore } from "@/stores/profile";
+import BillingPage from "@/components/BillingPage";
 
 interface Integration {
   icon: LucideIcon;
@@ -22,8 +23,12 @@ const allIntegrations: Integration[] = [
 ];
 
 export default function ProfilePage() {
-  const router = useRouter();
+  const { subPage, setSubPage } = useProfileStore();
   const [showDialog, setShowDialog] = useState(false);
+
+  if (subPage === "billing") {
+    return <BillingPage />;
+  }
 
   const connected = allIntegrations.filter((i) => i.connected);
 
@@ -75,7 +80,7 @@ export default function ProfilePage() {
         {/* 설정 메뉴 */}
         <section className="mt-8 space-y-2">
           <button
-            onClick={() => router.push("/profile/billing")}
+            onClick={() => setSubPage("billing")}
             className="w-full flex items-center gap-3 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-all duration-150 active:scale-[0.98]"
           >
             <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center">
