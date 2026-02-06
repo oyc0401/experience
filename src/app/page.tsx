@@ -1,41 +1,20 @@
 import {
-  Brain,
-  Bell,
-  AlignLeft,
   Github,
-  PenTool,
-  CalendarCheck,
-  Plus,
   Bot,
   MessageSquareMore,
   Code,
   Users,
   ChevronRight,
-  Sparkles,
+  Plus,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import AppBar from "@/components/AppBar";
 
 export default function HomePage() {
   return (
     <>
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-neutral-100 px-5 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-neutral-900 rounded-lg flex items-center justify-center">
-            <Brain className="text-white" size={14} />
-          </div>
-          <span className="font-bold text-lg tracking-tight">ExpLog</span>
-        </div>
-        <div className="flex gap-4">
-          <button className="relative">
-            <Bell className="text-neutral-400" size={22} />
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-neutral-900 rounded-full border-2 border-white" />
-          </button>
-          <button>
-            <AlignLeft className="text-neutral-900" size={22} />
-          </button>
-        </div>
-      </header>
+      <AppBar />
 
       {/* Hero Section */}
       <section className="px-5 py-8 bg-neutral-50">
@@ -76,40 +55,6 @@ export default function HomePage() {
           <span className="text-xs text-neutral-400 ml-2">
             3,420명의 취준생이 기록 중
           </span>
-        </div>
-      </section>
-
-      {/* Active Tracking */}
-      <section className="px-5 py-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-base">실시간 연동 상태</h2>
-          <span className="text-xs text-neutral-400">2025.05 업데이트</span>
-        </div>
-        <div className="grid grid-cols-4 gap-3">
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-2xl border border-neutral-200 flex items-center justify-center">
-              <Github size={20} />
-            </div>
-            <span className="text-[10px] text-neutral-500">GitHub</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-2xl border border-neutral-200 flex items-center justify-center">
-              <PenTool size={20} />
-            </div>
-            <span className="text-[10px] text-neutral-500">Blog</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-2xl border border-neutral-200 flex items-center justify-center">
-              <CalendarCheck size={20} />
-            </div>
-            <span className="text-[10px] text-neutral-500">Calendar</span>
-          </div>
-          <div className="flex flex-col items-center gap-2 opacity-40">
-            <div className="w-12 h-12 rounded-2xl border border-dashed border-neutral-300 flex items-center justify-center">
-              <Plus size={20} />
-            </div>
-            <span className="text-[10px] text-neutral-400">Add</span>
-          </div>
         </div>
       </section>
 
@@ -156,7 +101,7 @@ export default function HomePage() {
       {/* Knowledge DB Preview */}
       <section className="px-5 py-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-base">나의 지식 DB</h2>
+          <h2 className="font-bold text-base">나의 최근 경험</h2>
           <button className="text-xs text-neutral-400 flex items-center gap-1">
             전체보기 <ChevronRight size={12} />
           </button>
@@ -168,7 +113,7 @@ export default function HomePage() {
               <Code size={18} />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-bold">API 응답 속도 30% 개선</h4>
+              <h4 className="text-sm font-bold">경험기록앱 개발</h4>
               <p className="text-[11px] text-neutral-400">2025.05.12 저장됨</p>
             </div>
             <div className="text-neutral-300">
@@ -180,9 +125,7 @@ export default function HomePage() {
               <Users size={18} />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-bold">
-                팀 내 협업 툴 도입 및 가이드 제작
-              </h4>
+              <h4 className="text-sm font-bold">버거킹 알바</h4>
               <p className="text-[11px] text-neutral-400">2025.05.08 저장됨</p>
             </div>
             <div className="text-neutral-300">
@@ -192,23 +135,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Generation CTA */}
-      <section className="px-5 py-8">
-        <div className="bg-neutral-900 rounded-2xl p-6 text-center">
-          <Sparkles className="text-white mx-auto mb-4" size={32} />
-          <h3 className="text-white font-bold text-lg mb-2">
-            면접 답변 생성하기
-          </h3>
-          <p className="text-neutral-400 text-xs mb-6">
-            지금까지 쌓인 12개의 경험 데이터를 기반으로
-            <br />
-            완벽한 자소서와 면접 답변을 만듭니다.
-          </p>
-          <button className="w-full py-4 bg-white text-neutral-900 rounded-xl text-sm font-bold">
-            생성 시작하기
-          </button>
-        </div>
-      </section>
+      {/* Floating Action Button */}
+      <div className="fixed bottom-24 z-50 w-full max-w-[390px] left-1/2 -translate-x-1/2 pointer-events-none">
+        <Link
+          href="/write"
+          className="absolute bottom-0 right-4 w-14 h-14 bg-neutral-900 rounded-full shadow-lg flex items-center justify-center text-white pointer-events-auto"
+        >
+          <Plus size={24} />
+        </Link>
+      </div>
     </>
   );
 }

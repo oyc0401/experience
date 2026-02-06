@@ -15,10 +15,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="antialiased bg-neutral-100">
-        <div className="relative mx-auto w-full max-w-[390px] min-h-dvh bg-white text-neutral-900 shadow-2xl">
+        <div className="mx-auto w-full max-w-[390px] min-h-dvh bg-white text-neutral-900 shadow-2xl">
           <main className="pb-24">{children}</main>
-          <BottomNav />
         </div>
+        <BottomNav />
       </body>
     </html>
   );
