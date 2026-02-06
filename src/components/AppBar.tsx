@@ -6,13 +6,17 @@ import { Brain, Bell, ChevronLeft, Search, ArrowUpDown } from "lucide-react";
 import { useNotificationStore } from "@/stores/notification";
 import { useSearchStore } from "@/stores/search";
 import { useExperienceStore, sortLabels, type SortOption } from "@/stores/experience";
+import { useNavigationStore } from "@/stores/navigation";
 
 const pageTitles: Record<string, string> = {
-  "/experience": "내 경험",
   "/experience/app-dev/refactor-auth-logic": "경험 상세",
   "/history": "나의 최근 경험",
-  "/profile": "마이페이지",
   "/profile/billing": "결제",
+};
+
+const pageIdTitles: Record<string, string> = {
+  experience: "내 경험",
+  profile: "마이페이지",
 };
 
 export default function AppBar() {
@@ -21,6 +25,7 @@ export default function AppBar() {
   const toggle = useNotificationStore((s) => s.toggle);
   const { query, setQuery } = useSearchStore();
   const { postId, setPostId, sort, setSort, showSortMenu, setShowSortMenu } = useExperienceStore();
+  const pageId = useNavigationStore((s) => s.pageId);
   const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,12 +39,13 @@ export default function AppBar() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [showSortMenu, setShowSortMenu]);
 
-  const mainPages = ["/", "/experience", "/profile"];
-  const isHome = mainPages.includes(pathname) && !(pathname === "/experience" && postId);
-  const showSearch = pathname === "/experience" && postId !== null;
+  const isOnRoot = pathname === "/";
+  const isMainTab = isOnRoot && ["home", "experience", "profile"].includes(pageId);
+  const isHome = isMainTab && !(pageId === "experience" && postId);
+  const showSearch = isOnRoot && pageId === "experience" && postId !== null;
 
-  const isExperiencePage = pathname === "/experience";
-  const title = pageTitles[pathname] ?? "";
+  const isExperiencePage = isOnRoot && pageId === "experience";
+  const title = isOnRoot ? (pageIdTitles[pageId] ?? "") : (pageTitles[pathname] ?? "");
 
   if (isHome) {
     return (

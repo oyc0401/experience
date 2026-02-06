@@ -7,7 +7,11 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
-export default function HomePage() {
+import { useNavigationStore } from "@/stores/navigation";
+import ExperiencePage from "@/app/experience/page";
+import ProfilePage from "@/app/profile/page";
+
+function HomeContent() {
   return (
     <>
       {/* Quick Write */}
@@ -170,4 +174,17 @@ export default function HomePage() {
       </section>
     </>
   );
+}
+
+export default function HomePage() {
+  const pageId = useNavigationStore((s) => s.pageId);
+
+  switch (pageId) {
+    case "experience":
+      return <ExperiencePage />;
+    case "profile":
+      return <ProfilePage />;
+    default:
+      return <HomeContent />;
+  }
 }
