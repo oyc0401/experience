@@ -16,14 +16,11 @@ export default function HomePage() {
     <>
       {/* Quick Write */}
       <section className="px-5 pt-4 pb-2">
-        <div className="flex items-start gap-3 px-4 py-3.5 bg-neutral-50 rounded-2xl">
-          <div className="w-9 h-9 bg-neutral-900 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-            <PencilLine size={15} className="text-white" />
-          </div>
+        <div className="px-4 py-3.5 bg-neutral-50 rounded-2xl">
           <textarea
-            placeholder="오늘은 어떤 경험을 했나요?"
+            placeholder="오늘은 어떤 경험을 하셨나요?"
             rows={1}
-            className="flex-1 bg-transparent text-sm leading-relaxed resize-none outline-none placeholder:text-neutral-400 overflow-hidden"
+            className="w-full bg-transparent text-sm leading-relaxed resize-none outline-none placeholder:text-neutral-400 overflow-hidden"
             onInput={(e) => {
               const el = e.currentTarget;
               el.style.height = "auto";
@@ -31,6 +28,12 @@ export default function HomePage() {
             }}
           />
         </div>
+        <button
+          type="button"
+          className="w-full mt-3 py-2.5 bg-neutral-900 text-white text-sm font-medium rounded-xl"
+        >
+          등록하기
+        </button>
       </section>
 
       {/* AI Question Card */}
@@ -42,7 +45,10 @@ export default function HomePage() {
           </span>
         </div>
 
-        <div className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pl-5 pr-5 scrollbar-hide pb-1" style={{ scrollPaddingLeft: "20px" }}>
+        <div
+          className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pl-5 pr-5 scrollbar-hide pb-1"
+          style={{ scrollPaddingLeft: "20px" }}
+        >
           {/* Card 1 */}
           <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm shrink-0 w-[85%] snap-start">
             <div className="flex items-center gap-2 mb-3">
@@ -97,9 +103,8 @@ export default function HomePage() {
               <div className="flex gap-2 mb-2">
                 <Bot className="text-neutral-400 mt-0.5 shrink-0" size={14} />
                 <p className="text-xs leading-relaxed font-medium">
-                  &ldquo;REST API 설계 시 어떤 기준으로 엔드포인트를
-                  구성했나요? 그리고 React Query를 선택한 이유가
-                  무엇인가요?&rdquo;
+                  &ldquo;REST API 설계 시 어떤 기준으로 엔드포인트를 구성했나요?
+                  그리고 React Query를 선택한 이유가 무엇인가요?&rdquo;
                 </p>
               </div>
             </div>
@@ -121,19 +126,29 @@ export default function HomePage() {
       <section className="px-5 py-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-bold text-base">나의 최근 경험</h2>
-          <Link href="/history" className="text-xs text-neutral-400 flex items-center gap-1">
+          <Link
+            href="/history"
+            className="text-xs text-neutral-400 flex items-center gap-1"
+          >
             전체보기 <ChevronRight size={12} />
           </Link>
         </div>
 
         <div className="space-y-3">
-          <Link href="/experience/app-dev/refactor-auth-logic" className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl">
+          <Link
+            href="/experience/app-dev/refactor-auth-logic"
+            className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl"
+          >
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
               <Github size={18} />
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-bold">Refactor: Auth logic optimization</h4>
-              <p className="text-[11px] text-neutral-400 mt-0.5">인증 로직 리팩토링 및 성능 최적화</p>
+              <h4 className="text-sm font-bold">
+                Refactor: Auth logic optimization
+              </h4>
+              <p className="text-[11px] text-neutral-400 mt-0.5">
+                인증 로직 리팩토링 및 성능 최적화
+              </p>
               <p className="text-[10px] text-neutral-300 mt-1">2025.05.14</p>
             </div>
             <div className="text-neutral-300">
@@ -146,7 +161,9 @@ export default function HomePage() {
             </div>
             <div className="flex-1">
               <h4 className="text-sm font-bold">Feat: 경험 기록 API 연동</h4>
-              <p className="text-[11px] text-neutral-400 mt-0.5">경험 데이터를 저장하는 REST API 연동 구현</p>
+              <p className="text-[11px] text-neutral-400 mt-0.5">
+                경험 데이터를 저장하는 REST API 연동 구현
+              </p>
               <p className="text-[10px] text-neutral-300 mt-1">2025.05.12</p>
             </div>
             <div className="text-neutral-300">
