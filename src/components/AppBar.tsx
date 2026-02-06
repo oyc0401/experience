@@ -1,8 +1,9 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Brain, Bell, ChevronLeft } from "lucide-react";
+import { Brain, Bell, ChevronLeft, Search } from "lucide-react";
 import { useNotificationStore } from "@/stores/notification";
+import { useSearchStore } from "@/stores/search";
 
 const pageTitles: Record<string, string> = {
   "/experience": "내 경험",
@@ -10,6 +11,7 @@ const pageTitles: Record<string, string> = {
   "/experience/app-dev/refactor-auth-logic": "경험 상세",
   "/history": "나의 최근 경험",
   "/profile": "마이페이지",
+  "/profile/billing": "결제",
   "/write": "경험 기록하기",
 };
 
@@ -17,8 +19,10 @@ export default function AppBar() {
   const pathname = usePathname();
   const router = useRouter();
   const toggle = useNotificationStore((s) => s.toggle);
+  const { query, setQuery } = useSearchStore();
   const mainPages = ["/", "/experience", "/profile"];
   const isHome = mainPages.includes(pathname);
+  const showSearch = pathname === "/experience/app-dev";
 
   const title = pageTitles[pathname] ?? "";
 
@@ -41,10 +45,23 @@ export default function AppBar() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-neutral-100 px-5 py-4 flex items-center gap-3">
-      <button onClick={() => router.back()} className="text-neutral-900">
+      <button onClick={() => router.back()} className="text-neutral-900 shrink-0">
         <ChevronLeft size={22} />
       </button>
-      <span className="font-bold text-base">{title}</span>
+      {showSearch ? (
+        <div className="flex items-center gap-2 flex-1 bg-neutral-50 rounded-lg px-3 py-1.5">
+          <Search size={14} className="text-neutral-400 shrink-0" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="경험 검색..."
+            className="bg-transparent text-sm w-full outline-none placeholder:text-neutral-400"
+          />
+        </div>
+      ) : (
+        <span className="font-bold text-base">{title}</span>
+      )}
     </header>
   );
 }

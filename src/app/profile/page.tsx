@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Github, PenTool, CalendarCheck, Plus, X, Check, Slack, Trello, Figma, FileText, User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Github, PenTool, CalendarCheck, Plus, X, Check, Slack, Trello, Figma, FileText, User, CreditCard, LogOut, ChevronRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 interface Integration {
@@ -21,6 +22,7 @@ const allIntegrations: Integration[] = [
 ];
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [showDialog, setShowDialog] = useState(false);
 
   const connected = allIntegrations.filter((i) => i.connected);
@@ -68,6 +70,32 @@ export default function ProfilePage() {
               <span className="text-[10px] text-neutral-400">Add</span>
             </button>
           </div>
+        </section>
+
+        {/* 설정 메뉴 */}
+        <section className="mt-8 space-y-2">
+          <button
+            onClick={() => router.push("/profile/billing")}
+            className="w-full flex items-center gap-3 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-colors"
+          >
+            <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center">
+              <CreditCard size={18} className="text-neutral-600" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="text-sm font-medium">결제</p>
+              <p className="text-[11px] text-neutral-400 mt-0.5">현재 Pro Plan 이용 중</p>
+            </div>
+            <ChevronRight size={16} className="text-neutral-300" />
+          </button>
+
+          <button className="w-full flex items-center gap-3 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+              <LogOut size={18} className="text-red-400" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="text-sm font-medium text-red-500">로그아웃</p>
+            </div>
+          </button>
         </section>
       </div>
 
