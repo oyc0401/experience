@@ -8,9 +8,9 @@ import { useSearchStore } from "@/stores/search";
 import { useExperienceStore, sortLabels, type SortOption } from "@/stores/experience";
 import { useNavigationStore } from "@/stores/navigation";
 import { useProfileStore } from "@/stores/profile";
+import { usePageSubView } from "@/hooks/usePageSubView";
 
 const pageTitles: Record<string, string> = {
-  "/experience/app-dev/refactor-auth-logic": "경험 상세",
   "/history": "나의 최근 경험",
 };
 
@@ -28,10 +28,10 @@ export default function AppBar() {
   const router = useRouter();
   const toggle = useNotificationStore((s) => s.toggle);
   const { query, setQuery } = useSearchStore();
-  const { postId, setPostId, sort, setSort, showSortMenu, setShowSortMenu } = useExperienceStore();
+  const { postId, articleId, sort, setSort, showSortMenu, setShowSortMenu } = useExperienceStore();
   const pageId = useNavigationStore((s) => s.pageId);
   const profileSubPage = useProfileStore((s) => s.subPage);
-  const setProfileSubPage = useProfileStore((s) => s.setSubPage);
+  const { hasSubView, resetSubView } = usePageSubView(pageId);
   const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,18 +46,15 @@ export default function AppBar() {
   }, [showSortMenu, setShowSortMenu]);
 
   const isOnRoot = pathname === "/";
-  const isMainTab = isOnRoot && ["home", "experience", "profile"].includes(pageId);
-  const hasSubPage = (pageId === "experience" && postId) || (pageId === "profile" && profileSubPage);
-  const isHome = isMainTab && !hasSubPage;
-  const showSearch = isOnRoot && pageId === "experience" && postId !== null;
-
-  const isExperiencePage = isOnRoot && pageId === "experience";
-  const isProfileSubPage = isOnRoot && pageId === "profile" && profileSubPage;
+  const isHome = isOnRoot && !hasSubView;
+  const showSearch = isOnRoot && pageId === "experience" && postId !== null && !articleId;
 
   let title = "";
   if (!isOnRoot) {
     title = pageTitles[pathname] ?? "";
-  } else if (isProfileSubPage) {
+  } else if (pageId === "experience" && articleId) {
+    title = "경험 상세";
+  } else if (pageId === "profile" && profileSubPage) {
     title = profileSubPageTitles[profileSubPage] ?? "";
   } else {
     title = pageIdTitles[pageId] ?? "";
@@ -81,11 +78,8 @@ export default function AppBar() {
   }
 
   const handleBack = () => {
-    if (isExperiencePage && postId) {
-      setPostId(null);
-      setQuery("");
-    } else if (isOnRoot && pageId === "profile" && profileSubPage) {
-      setProfileSubPage(null);
+    if (isOnRoot && hasSubView) {
+      resetSubView();
     } else {
       router.back();
     }

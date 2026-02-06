@@ -9,10 +9,26 @@ import {
 import { useEffect } from "react";
 import Link from "next/link";
 import { useNavigationStore } from "@/stores/navigation";
+import { useExperienceStore } from "@/stores/experience";
 import ExperiencePage from "@/app/experience/page";
 import ProfilePage from "@/app/profile/page";
 
 function HomeContent() {
+  const setPageId = useNavigationStore((s) => s.setPageId);
+  const setPostId = useExperienceStore((s) => s.setPostId);
+  const setArticleId = useExperienceStore((s) => s.setArticleId);
+
+  const goToArticle = (slug: string) => {
+    setPageId("experience");
+    setPostId("app-dev", "경험기록앱 개발");
+    setArticleId(slug);
+  };
+
+  const goToPost = (postId: string, title: string) => {
+    setPageId("experience");
+    setPostId(postId, title);
+  };
+
   return (
     <>
       {/* Quick Write */}
@@ -58,11 +74,11 @@ function HomeContent() {
               </div>
               <span className="text-neutral-300 text-[10px]">2시간 전</span>
             </div>
-            <Link href="/experience/app-dev/refactor-auth-logic">
+            <button onClick={() => goToArticle("refactor-auth-logic")} className="text-left">
               <h3 className="font-bold text-sm mb-1">
                 Refactor: Auth logic optimization
               </h3>
-            </Link>
+            </button>
 
             <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100 mb-4">
               <div className="flex gap-2 mb-2">
@@ -94,11 +110,11 @@ function HomeContent() {
               </div>
               <span className="text-neutral-300 text-[10px]">1일 전</span>
             </div>
-            <Link href="/experience/app-dev">
+            <button onClick={() => goToPost("app-dev", "경험기록앱 개발")} className="text-left">
               <h3 className="font-bold text-sm mb-1">
                 Feat: 경험 기록 API 연동
               </h3>
-            </Link>
+            </button>
 
             <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100 mb-4">
               <div className="flex gap-2 mb-2">
@@ -136,9 +152,9 @@ function HomeContent() {
         </div>
 
         <div className="space-y-3">
-          <Link
-            href="/experience/app-dev/refactor-auth-logic"
-            className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl"
+          <button
+            onClick={() => goToArticle("refactor-auth-logic")}
+            className="w-full flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl text-left"
           >
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
               <Github size={18} />
@@ -155,7 +171,7 @@ function HomeContent() {
             <div className="text-neutral-300">
               <ChevronRight size={14} />
             </div>
-          </Link>
+          </button>
           <div className="flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl">
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
               <Github size={18} />

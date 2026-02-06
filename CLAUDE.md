@@ -2,10 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Rules
+
+- **`npm run build` 실행 금지** — 빌드는 직접 하지 말 것
+
 ## Build & Development Commands
 
 - `npm run dev` — Start development server
-- `npm run build` — Production build
+- `npm run build` — Production build (Claude 실행 금지)
 - `npm run start` — Start production server
 - `npm run lint` — Run ESLint
 
@@ -22,10 +26,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Path Alias
 - `@/*` → `./src/*`
 
+### SPA Navigation
+
+모든 페이지 전환은 SPA 방식. URL 라우트가 아닌 Zustand 상태로 뷰를 전환.
+
+- **탭 전환**: `useNavigationStore`의 `pageId` (`home` | `experience` | `profile`)
+- **하위뷰 관리**: 각 탭 store에서 depth별 상태 관리
+  - experience: `postId` (카테고리) → `articleId` (글 상세/편집)
+  - profile: `subPage` (`"billing"` 등)
+- **통일 인터페이스**: `usePageSubView(pageId)` 훅이 `{ hasSubView, resetSubView }` 제공
+  - `resetSubView`는 가장 깊은 depth부터 한 단계씩 pop
+  - 새 탭에 하위뷰 추가 시 이 훅의 switch만 수정하면 BottomNav/AppBar 자동 적용
+- **BottomNav**: 같은 탭 재클릭 시 하위뷰 있으면 `resetSubView`, 없으면 스크롤 top
+- **AppBar**: `hasSubView` 없으면 로고+벨, 있으면 뒤로가기+타이틀(또는 검색바)
+
 ### Layout Structure
 Root layout (`src/app/layout.tsx`)이 AppBar, BottomNav, NotificationDialog를 전역 렌더링.
-- **AppBar**: 메인 탭(`/`, `/experience`, `/profile`)에서는 로고+알림, 나머지 페이지에서는 뒤로가기+타이틀. 새 페이지 추가 시 `pageTitles` 맵에 경로-타이틀 등록 필요.
-- **BottomNav**: `startsWith`로 active 판정 (홈은 정확 일치)
+- **AppBar**: 메인 탭에서 하위뷰 없으면 로고+알림, 하위뷰 있으면 뒤로가기+타이틀
+- **BottomNav**: `pageId`로 active 판정, 재클릭 시 하위뷰 pop
 - **NotificationDialog**: Zustand store (`src/stores/notification.ts`)로 열림/닫힘 제어, props 없는 독립 컴포넌트
 
 ### State Management
@@ -46,4 +64,4 @@ Root layout (`src/app/layout.tsx`)이 AppBar, BottomNav, NotificationDialog를 �
 ### Page Patterns
 - 서버 컴포넌트 기본, 인터랙션 필요 시 `"use client"` 추가
 - 하드코딩된 더미 데이터 사용 중 (API 미연동)
-- 경험 상세 페이지는 정적 라우트 (`/experience/app-dev/refactor-auth-logic`)
+- 경험 상세 페이지는 SPA 내 Zustand 상태로 전환 (`articleId`)

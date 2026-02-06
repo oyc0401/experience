@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Code, Users, ChevronRight, Search, Github, Pencil } from "lucide-react";
-import Link from "next/link";
+import { useMemo, useState, useRef, useEffect, useCallback } from "react";
+import { Code, Users, ChevronRight, Search, Github, Pencil, Eye, PencilLine } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useExperienceStore, type SortOption } from "@/stores/experience";
@@ -169,6 +168,40 @@ const markdownComponents = {
   ),
 };
 
+const articleMarkdownComponents = {
+  h2: ({ children }: { children?: React.ReactNode }) => (
+    <h2 className="text-base font-bold mt-6 mb-2 first:mt-0">{children}</h2>
+  ),
+  h3: ({ children }: { children?: React.ReactNode }) => (
+    <h3 className="text-sm font-bold mt-4 mb-1.5">{children}</h3>
+  ),
+  p: ({ children }: { children?: React.ReactNode }) => (
+    <p className="text-sm text-neutral-700 leading-relaxed mb-3">{children}</p>
+  ),
+  ul: ({ children }: { children?: React.ReactNode }) => (
+    <ul className="text-sm text-neutral-700 space-y-1 mb-3 pl-4 list-disc">{children}</ul>
+  ),
+  li: ({ children }: { children?: React.ReactNode }) => (
+    <li className="leading-relaxed">{children}</li>
+  ),
+  code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
+    if (className?.includes("language-")) {
+      return (
+        <code className="block bg-neutral-50 border border-neutral-100 rounded-xl p-4 text-xs overflow-x-auto">{children}</code>
+      );
+    }
+    return (
+      <code className="bg-neutral-100 px-1.5 py-0.5 rounded text-xs">{children}</code>
+    );
+  },
+  pre: ({ children }: { children?: React.ReactNode }) => (
+    <pre className="mb-3 overflow-hidden rounded-xl">{children}</pre>
+  ),
+  strong: ({ children }: { children?: React.ReactNode }) => (
+    <strong className="font-bold">{children}</strong>
+  ),
+};
+
 /* ── 경험 목록 뷰 ── */
 function ExperienceListView() {
   const [query, setQuery] = useState("");
@@ -220,11 +253,12 @@ function ExperienceListView() {
   );
 }
 
-/* ── 경험 상세 뷰 ── */
+/* ── 경험 상세 뷰 (카테고리 내 글 목록) ── */
 function ExperienceDetailView() {
   const query = useSearchStore((s) => s.query);
   const sort = useExperienceStore((s) => s.sort);
   const postTitle = useExperienceStore((s) => s.postTitle);
+  const setArticleId = useExperienceStore((s) => s.setArticleId);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
@@ -257,13 +291,13 @@ function ExperienceDetailView() {
                     </span>
                   </div>
                 </div>
-                <Link
-                  href={`/experience/app-dev/${exp.slug}`}
+                <button
+                  onClick={() => setArticleId(exp.slug)}
                   className="flex items-center gap-1 text-xs text-neutral-500 bg-neutral-100 px-3 py-1.5 rounded-full shrink-0 ml-3"
                 >
                   <Pencil size={12} />
                   수정하기
-                </Link>
+                </button>
               </div>
 
               <div>
@@ -286,13 +320,80 @@ function ExperienceDetailView() {
   );
 }
 
+/* ── 글 편집 뷰 ── */
+function ArticleEditView() {
+  const articleId = useExperienceStore((s) => s.articleId);
+  const post = posts.find((p) => p.slug === articleId);
+
+  const [content, setContent] = useState(post?.content ?? "");
+  const [preview, setPreview] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const autoResize = useCallback(() => {
+    const el = textareaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = el.scrollHeight + "px";
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!preview) autoResize();
+  }, [preview, autoResize]);
+
+  if (!post) return null;
+
+  return (
+    <div className="px-5 py-6">
+      <div className="flex items-center gap-3 mb-5">
+        <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
+          <Github size={18} />
+        </div>
+        <div>
+          <h1 className="text-lg font-bold leading-tight">{post.title}</h1>
+          <div className="flex items-center gap-2 mt-0.5">
+            <p className="text-[11px] text-neutral-400">{post.updatedDate}</p>
+            <span className="text-[10px] text-neutral-300 font-mono bg-neutral-50 px-1.5 py-0.5 rounded">
+              {post.commit}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {preview ? (
+        <article>
+          <ReactMarkdown components={articleMarkdownComponents}>
+            {content}
+          </ReactMarkdown>
+        </article>
+      ) : (
+        <textarea
+          ref={textareaRef}
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+            autoResize();
+          }}
+          className="w-full text-sm leading-relaxed resize-none focus:outline-none overflow-hidden"
+        />
+      )}
+
+      <button
+        onClick={() => setPreview(!preview)}
+        className="fixed bottom-28 right-1/2 translate-x-[170px] w-12 h-12 bg-neutral-900 rounded-full shadow-lg flex items-center justify-center text-white z-50"
+      >
+        {preview ? <PencilLine size={20} /> : <Eye size={20} />}
+      </button>
+    </div>
+  );
+}
+
 /* ── 메인 페이지 ── */
 export default function ExperiencePage() {
   const postId = useExperienceStore((s) => s.postId);
+  const articleId = useExperienceStore((s) => s.articleId);
 
-  if (postId) {
-    return <ExperienceDetailView />;
-  }
-
+  if (postId && articleId) return <ArticleEditView />;
+  if (postId) return <ExperienceDetailView />;
   return <ExperienceListView />;
 }

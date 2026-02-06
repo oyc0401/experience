@@ -13,6 +13,8 @@ interface ExperienceStore {
   postId: string | null;
   postTitle: string;
   setPostId: (postId: string | null, title?: string) => void;
+  articleId: string | null;
+  setArticleId: (articleId: string | null) => void;
   sort: SortOption;
   setSort: (sort: SortOption) => void;
   showSortMenu: boolean;
@@ -22,7 +24,9 @@ interface ExperienceStore {
 export const useExperienceStore = create<ExperienceStore>((set) => ({
   postId: null,
   postTitle: "",
-  setPostId: (postId, title) => set({ postId, postTitle: title ?? "" }),
+  setPostId: (postId, title) => set({ postId, postTitle: title ?? "", articleId: null }),
+  articleId: null,
+  setArticleId: (articleId) => set({ articleId }),
   sort: "updated-desc",
   setSort: (sort) => set({ sort, showSortMenu: false }),
   showSortMenu: false,
