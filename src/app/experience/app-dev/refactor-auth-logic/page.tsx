@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ChevronLeft, Github, Eye, PencilLine } from "lucide-react";
-import Link from "next/link";
+import { Github, Eye, PencilLine } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 const initialContent = `## 배경
@@ -67,13 +66,6 @@ export default function RefactorAuthLogicPage() {
 
   return (
     <div className="px-5 py-6">
-      <Link
-        href="/experience/app-dev"
-        className="flex items-center gap-1 text-neutral-400 text-sm mb-4"
-      >
-        <ChevronLeft size={16} /> 경험기록앱 개발
-      </Link>
-
       <div className="flex items-center gap-3 mb-5">
         <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
           <Github size={18} />
@@ -87,7 +79,7 @@ export default function RefactorAuthLogicPage() {
       </div>
 
       {preview ? (
-        <article className="min-h-[65vh] p-4 border border-neutral-200 rounded-2xl">
+        <article>
           <ReactMarkdown
             components={{
               h2: ({ children }) => (
@@ -134,7 +126,7 @@ export default function RefactorAuthLogicPage() {
             setContent(e.target.value);
             autoResize();
           }}
-          className="w-full p-4 border border-neutral-200 rounded-2xl text-sm leading-relaxed resize-none focus:outline-none focus:border-neutral-400 overflow-hidden"
+          className="w-full text-sm leading-relaxed resize-none focus:outline-none overflow-hidden"
         />
       )}
 

@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Github } from "lucide-react";
+import { ChevronRight, Github } from "lucide-react";
 import Link from "next/link";
 
 const experiences = [
@@ -25,14 +25,6 @@ const experiences = [
 export default function AppDevExperiencePage() {
   return (
     <div className="px-5 py-6">
-      <Link
-        href="/experience"
-        className="flex items-center gap-1 text-neutral-400 text-sm mb-4"
-      >
-        <ChevronLeft size={16} /> 내 경험
-      </Link>
-
-      <h1 className="text-2xl font-bold mb-6">경험기록앱 개발</h1>
 
       <div className="space-y-3">
         {experiences.map((exp) => (

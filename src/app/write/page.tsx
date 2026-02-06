@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function WritePage() {
@@ -13,14 +12,6 @@ export default function WritePage() {
 
   return (
     <div className="px-5 py-6">
-      <button
-        onClick={() => router.back()}
-        className="flex items-center gap-1 text-neutral-400 text-sm mb-4"
-      >
-        <ChevronLeft size={16} /> 뒤로
-      </button>
-
-      <h1 className="text-2xl font-bold mb-6">경험 작성하기</h1>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
