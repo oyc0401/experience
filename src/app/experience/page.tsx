@@ -6,6 +6,7 @@ import {
   Briefcase,
   ChevronRight,
   Code,
+  Download,
   Eye,
   GraduationCap,
   Loader2,
@@ -19,7 +20,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
-import type { FolderItemDtoFolderType } from "@/api/generated";
+import type { ExperienceSummaryDto, FolderItemDtoFolderType } from "@/api/generated";
 import {
   useExperienceDetail,
   useExperiencesByFolder,
@@ -235,6 +236,34 @@ function ExperienceListView() {
   );
 }
 
+function downloadAllExperiencesTxt(
+  folderTitle: string,
+  experiences: ExperienceSummaryDto[],
+) {
+  const sections = experiences.map((exp) =>
+    [
+      `제목: ${exp.title ?? ""}`,
+      `유형: ${exp.experienceType ?? ""}`,
+      `소스: ${exp.sourceType ?? ""}`,
+      exp.sourceUrl ? `URL: ${exp.sourceUrl}` : "",
+      `작성일: ${formatDate(exp.createdAt)}`,
+      "",
+      exp.content ?? "",
+    ]
+      .filter(Boolean)
+      .join("\n"),
+  );
+
+  const text = sections.join("\n\n" + "=".repeat(40) + "\n\n");
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${folderTitle.replace(/[/\\?%*:|"<>]/g, "_")}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 /* ── 경험 상세 뷰 (폴더 내 경험 목록) ── */
 function ExperienceDetailView() {
   const query = useSearchStore((s) => s.query);
@@ -281,7 +310,17 @@ function ExperienceDetailView() {
 
   return (
     <div className="px-5 pt-3 pb-6">
-      <h1 className="font-bold text-lg mb-3">{folderTitle}</h1>
+      <div className="flex items-center justify-between mb-3">
+        <h1 className="font-bold text-lg">{folderTitle}</h1>
+        <button
+          type="button"
+          onClick={() => downloadAllExperiencesTxt(folderTitle, filtered)}
+          className="flex items-center gap-1 text-xs text-neutral-500 bg-neutral-100 px-3 py-1.5 rounded-full"
+        >
+          <Download size={12} />
+          다운로드
+        </button>
+      </div>
       <div className="-mx-5">
         {filtered.map((exp, i) => (
           <article key={exp.experienceId}>
