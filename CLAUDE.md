@@ -32,7 +32,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **탭 전환**: `useNavigationStore`의 `pageId` (`home` | `experience` | `profile`)
 - **하위뷰 관리**: 각 탭 store에서 depth별 상태 관리
-  - experience: `postId` (카테고리) → `articleId` (글 상세/편집)
+  - experience: `folderId` (폴더) → `experienceId` (글 상세/편집)
   - profile: `subPage` (`"billing"` 등)
 - **통일 인터페이스**: `usePageSubView(pageId)` 훅이 `{ hasSubView, resetSubView }` 제공
   - `resetSubView`는 가장 깊은 depth부터 한 단계씩 pop
@@ -64,4 +64,4 @@ Root layout (`src/app/layout.tsx`)이 AppBar, BottomNav, NotificationDialog를 �
 ### Page Patterns
 - 서버 컴포넌트 기본, 인터랙션 필요 시 `"use client"` 추가
 - 하드코딩된 더미 데이터 사용 중 (API 미연동)
-- 경험 상세 페이지는 SPA 내 Zustand 상태로 전환 (`articleId`)
+- 경험 상세 페이지는 SPA 내 Zustand 상태로 전환 (`experienceId`)

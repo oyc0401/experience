@@ -100,7 +100,7 @@ function timeAgo(dateStr?: string) {
 function HistoryView() {
   const { data: experiences, isLoading } = useRecentExperiences();
   const setPageId = useNavigationStore((s) => s.setPageId);
-  const setArticleId = useExperienceStore((s) => s.setArticleId);
+  const setExperienceId = useExperienceStore((s) => s.setExperienceId);
 
   if (isLoading) {
     return (
@@ -128,7 +128,7 @@ function HistoryView() {
             onClick={() => {
               if (exp.experienceId) {
                 setPageId("experience");
-                setArticleId(exp.experienceId);
+                setExperienceId(exp.experienceId);
               }
             }}
             className="w-full flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl text-left"
@@ -157,7 +157,7 @@ function HistoryView() {
 
 function HomeContent() {
   const setPageId = useNavigationStore((s) => s.setPageId);
-  const setArticleId = useExperienceStore((s) => s.setArticleId);
+  const setExperienceId = useExperienceStore((s) => s.setExperienceId);
   const setHomeSubView = useHomeStore((s) => s.setSubView);
   const homeSubView = useHomeStore((s) => s.subView);
 
@@ -194,9 +194,9 @@ function HomeContent() {
     );
   };
 
-  const goToArticle = (experienceId: number) => {
+  const goToExperience = (experienceId: number) => {
     setPageId("experience");
-    setArticleId(experienceId);
+    setExperienceId(experienceId);
   };
 
   return (
@@ -258,7 +258,9 @@ function HomeContent() {
               >
                 <button
                   type="button"
-                  onClick={() => q.experienceId && goToArticle(q.experienceId)}
+                  onClick={() =>
+                    q.experienceId && goToExperience(q.experienceId)
+                  }
                   className="w-full text-left mb-1"
                 >
                   <div className="flex items-center gap-2 mb-3">
@@ -352,7 +354,7 @@ function HomeContent() {
                 type="button"
                 key={exp.experienceId}
                 onClick={() =>
-                  exp.experienceId && goToArticle(exp.experienceId)
+                  exp.experienceId && goToExperience(exp.experienceId)
                 }
                 className="w-full flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl text-left"
               >

@@ -10,11 +10,11 @@ export const sortLabels: Record<SortOption, string> = {
 };
 
 interface ExperienceStore {
-  postId: number | null;
-  postTitle: string;
-  setPostId: (postId: number | null, title?: string) => void;
-  articleId: number | null;
-  setArticleId: (articleId: number | null) => void;
+  folderId: number | null;
+  folderTitle: string;
+  setFolderId: (folderId: number | null, title?: string) => void;
+  experienceId: number | null;
+  setExperienceId: (experienceId: number | null) => void;
   sort: SortOption;
   setSort: (sort: SortOption) => void;
   showSortMenu: boolean;
@@ -22,11 +22,12 @@ interface ExperienceStore {
 }
 
 export const useExperienceStore = create<ExperienceStore>((set) => ({
-  postId: null,
-  postTitle: "",
-  setPostId: (postId, title) => set({ postId, postTitle: title ?? "", articleId: null }),
-  articleId: null,
-  setArticleId: (articleId) => set({ articleId }),
+  folderId: null,
+  folderTitle: "",
+  setFolderId: (folderId, title) =>
+    set({ folderId, folderTitle: title ?? "", experienceId: null }),
+  experienceId: null,
+  setExperienceId: (experienceId) => set({ experienceId }),
   sort: "updated-desc",
   setSort: (sort) => set({ sort, showSortMenu: false }),
   showSortMenu: false,

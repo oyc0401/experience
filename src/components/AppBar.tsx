@@ -27,7 +27,14 @@ export default function AppBar() {
   const router = useRouter();
   const toggle = useNotificationStore((s) => s.toggle);
   const { query, setQuery } = useSearchStore();
-  const { postId, articleId, sort, setSort, showSortMenu, setShowSortMenu } = useExperienceStore();
+  const {
+    folderId,
+    experienceId,
+    sort,
+    setSort,
+    showSortMenu,
+    setShowSortMenu,
+  } = useExperienceStore();
   const pageId = useNavigationStore((s) => s.pageId);
   const homeSubView = useHomeStore((s) => s.subView);
   const profileSubPage = useProfileStore((s) => s.subPage);
@@ -47,14 +54,15 @@ export default function AppBar() {
 
   const isOnRoot = pathname === "/";
   const isHome = isOnRoot && !hasSubView;
-  const showSearch = isOnRoot && pageId === "experience" && postId !== null && !articleId;
+  const showSearch =
+    isOnRoot && pageId === "experience" && folderId !== null && !experienceId;
 
   let title = "";
   if (!isOnRoot) {
     title = pageTitles[pathname] ?? "";
   } else if (pageId === "home" && homeSubView === "history") {
     title = "나의 최근 경험";
-  } else if (pageId === "experience" && articleId) {
+  } else if (pageId === "experience" && experienceId) {
     title = "경험 상세";
   } else if (pageId === "profile" && profileSubPage) {
     title = profileSubPageTitles[profileSubPage] ?? "";

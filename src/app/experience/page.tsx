@@ -169,7 +169,7 @@ const articleMarkdownComponents = {
 /* ── 경험 목록 뷰 (폴더 리스트) ── */
 function ExperienceListView() {
   const [query, setQuery] = useState("");
-  const setPostId = useExperienceStore((s) => s.setPostId);
+  const setFolderId = useExperienceStore((s) => s.setFolderId);
   const { data: folders, isLoading } = useFolders();
 
   const filtered = folders.filter((f) =>
@@ -203,7 +203,7 @@ function ExperienceListView() {
                 key={folder.folderId}
                 onClick={() =>
                   folder.folderId != null &&
-                  setPostId(folder.folderId, folder.name ?? "")
+                  setFolderId(folder.folderId, folder.name ?? "")
                 }
                 className="w-full flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl transition-transform duration-150 active:scale-[0.98] text-left"
               >
@@ -239,11 +239,11 @@ function ExperienceListView() {
 function ExperienceDetailView() {
   const query = useSearchStore((s) => s.query);
   const sort = useExperienceStore((s) => s.sort);
-  const postId = useExperienceStore((s) => s.postId);
-  const postTitle = useExperienceStore((s) => s.postTitle);
-  const setArticleId = useExperienceStore((s) => s.setArticleId);
+  const folderId = useExperienceStore((s) => s.folderId);
+  const folderTitle = useExperienceStore((s) => s.folderTitle);
+  const setExperienceId = useExperienceStore((s) => s.setExperienceId);
   const { data: experiences, isLoading } = useExperiencesByFolder(
-    postId as number,
+    folderId as number,
   );
 
   const filtered = useMemo(() => {
@@ -281,7 +281,7 @@ function ExperienceDetailView() {
 
   return (
     <div className="px-5 pt-3 pb-6">
-      <h1 className="font-bold text-lg mb-3">{postTitle}</h1>
+      <h1 className="font-bold text-lg mb-3">{folderTitle}</h1>
       <div className="-mx-5">
         {filtered.map((exp, i) => (
           <article key={exp.experienceId}>
@@ -299,7 +299,8 @@ function ExperienceDetailView() {
                 <button
                   type="button"
                   onClick={() =>
-                    exp.experienceId != null && setArticleId(exp.experienceId)
+                    exp.experienceId != null &&
+                    setExperienceId(exp.experienceId)
                   }
                   className="flex items-center gap-1 text-xs text-neutral-500 bg-neutral-100 px-3 py-1.5 rounded-full shrink-0 ml-3"
                 >
@@ -333,9 +334,11 @@ function ExperienceDetailView() {
 }
 
 /* ── 글 상세/편집 뷰 ── */
-function ArticleEditView() {
-  const articleId = useExperienceStore((s) => s.articleId);
-  const { data: detail, isLoading } = useExperienceDetail(articleId as number);
+function ExperienceEditView() {
+  const experienceId = useExperienceStore((s) => s.experienceId);
+  const { data: detail, isLoading } = useExperienceDetail(
+    experienceId as number,
+  );
 
   if (isLoading) {
     return (
@@ -353,10 +356,10 @@ function ArticleEditView() {
     );
   }
 
-  return <ArticleEditor detail={detail} />;
+  return <ExperienceEditor detail={detail} />;
 }
 
-function ArticleEditor({
+function ExperienceEditor({
   detail,
 }: {
   detail: import("@/api/generated").ExperienceDetailResponse;
@@ -424,10 +427,10 @@ function ArticleEditor({
 
 /* ── 메인 페이지 ── */
 export default function ExperiencePage() {
-  const postId = useExperienceStore((s) => s.postId);
-  const articleId = useExperienceStore((s) => s.articleId);
+  const folderId = useExperienceStore((s) => s.folderId);
+  const experienceId = useExperienceStore((s) => s.experienceId);
 
-  if (articleId) return <ArticleEditView />;
-  if (postId) return <ExperienceDetailView />;
+  if (experienceId) return <ExperienceEditView />;
+  if (folderId) return <ExperienceDetailView />;
   return <ExperienceListView />;
 }
