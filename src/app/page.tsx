@@ -165,7 +165,7 @@ function HomeContent() {
 
   const { data: questions, isLoading: questionsLoading } = useQuestions();
   const { data: recentExperiences, isLoading: recentLoading } =
-    useRecentExperiences(5);
+    useRecentExperiences(3);
   const createMutation = useCreateExperienceMutation();
   const answerMutation = useAnswerQuestionMutation();
 
