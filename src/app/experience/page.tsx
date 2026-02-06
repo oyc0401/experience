@@ -62,6 +62,40 @@ function formatDate(dateStr?: string) {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
 }
 
+const markdownComponents = {
+  h2: ({ children }: { children?: React.ReactNode }) => (
+    <h2 className="text-[13px] font-bold mt-5 mb-1.5 first:mt-0">{children}</h2>
+  ),
+  h3: ({ children }: { children?: React.ReactNode }) => (
+    <h3 className="text-xs font-bold mt-3 mb-1">{children}</h3>
+  ),
+  p: ({ children }: { children?: React.ReactNode }) => (
+    <p className="text-xs text-neutral-600 leading-relaxed mb-2">{children}</p>
+  ),
+  ul: ({ children }: { children?: React.ReactNode }) => (
+    <ul className="text-xs text-neutral-600 space-y-0.5 mb-2 pl-3.5 list-disc">{children}</ul>
+  ),
+  li: ({ children }: { children?: React.ReactNode }) => (
+    <li className="leading-relaxed">{children}</li>
+  ),
+  code: ({ children, className }: { children?: React.ReactNode; className?: string }) => {
+    if (className?.includes("language-")) {
+      return (
+        <code className="block bg-neutral-50 border border-neutral-100 rounded-lg p-3 text-[11px] overflow-x-auto">{children}</code>
+      );
+    }
+    return (
+      <code className="bg-neutral-100 px-1 py-0.5 rounded text-[11px]">{children}</code>
+    );
+  },
+  pre: ({ children }: { children?: React.ReactNode }) => (
+    <pre className="mb-2 overflow-hidden rounded-lg">{children}</pre>
+  ),
+  strong: ({ children }: { children?: React.ReactNode }) => (
+    <strong className="font-bold">{children}</strong>
+  ),
+};
+
 const articleMarkdownComponents = {
   h2: ({ children }: { children?: React.ReactNode }) => (
     <h2 className="text-base font-bold mt-6 mb-2 first:mt-0">{children}</h2>
@@ -217,9 +251,6 @@ function ExperienceDetailView() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-bold truncate">{exp.title}</h3>
-                      <p className="text-[11px] text-neutral-400 mt-0.5 truncate">
-                        {exp.summary}
-                      </p>
                     </div>
                   </div>
                   <button
@@ -231,6 +262,14 @@ function ExperienceDetailView() {
                     수정하기
                   </button>
                 </div>
+
+                {exp.summary && (
+                  <div>
+                    <ReactMarkdown components={markdownComponents}>
+                      {exp.summary}
+                    </ReactMarkdown>
+                  </div>
+                )}
 
                 <p className="text-right text-[11px] text-neutral-400 mt-4">
                   {formatDate(exp.createdAt)}
@@ -253,30 +292,6 @@ function ArticleEditView() {
   const articleId = useExperienceStore((s) => s.articleId);
   const { data: detail, isLoading } = useExperienceDetail(articleId as number);
 
-  const [content, setContent] = useState("");
-  const [preview, setPreview] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const initialized = useRef(false);
-
-  useEffect(() => {
-    if (detail?.content && !initialized.current) {
-      setContent(detail.content);
-      initialized.current = true;
-    }
-  }, [detail]);
-
-  const autoResize = useCallback(() => {
-    const el = textareaRef.current;
-    if (el) {
-      el.style.height = "auto";
-      el.style.height = `${el.scrollHeight}px`;
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!preview) autoResize();
-  }, [preview, autoResize]);
-
   if (isLoading) {
     return (
       <div className="flex justify-center py-20">
@@ -293,13 +308,31 @@ function ArticleEditView() {
     );
   }
 
-  const Icon = sourceTypeIcon(detail.sourceType);
+  return <ArticleEditor detail={detail} />;
+}
+
+function ArticleEditor({ detail }: { detail: import("@/api/generated").ExperienceDetailResponse }) {
+  const [content, setContent] = useState(detail.content ?? "");
+  const [preview, setPreview] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const autoResize = useCallback(() => {
+    const el = textareaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = `${el.scrollHeight}px`;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!preview) autoResize();
+  }, [preview, autoResize]);
 
   return (
     <div className="px-5 py-6">
       <div className="flex items-center gap-3 mb-5">
         <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
-          <Icon size={18} />
+          <SourceTypeIcon sourceType={detail.sourceType} size={18} />
         </div>
         <div>
           <h1 className="text-lg font-bold leading-tight">{detail.title}</h1>
