@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   BookOpen,
   Bot,
@@ -15,12 +14,6 @@ import {
 import type {
   ExperienceSummaryDtoSourceType,
   QuestionSummaryDtoSourceType,
-} from "@/api/generated";
-import {
-  getGetQuestionsQueryKey,
-  getGetRecentExperiencesQueryKey,
-  getGetExperiencesByFolderQueryKey,
-  getGetFoldersQueryKey,
 } from "@/api/generated";
 import ExperiencePage from "@/app/experience/page";
 import ProfilePage from "@/app/profile/page";
@@ -168,7 +161,6 @@ function HomeContent() {
   const setHomeSubView = useHomeStore((s) => s.setSubView);
   const homeSubView = useHomeStore((s) => s.subView);
 
-  const queryClient = useQueryClient();
   const { data: questions, isLoading: questionsLoading } = useQuestions();
   const { data: recentExperiences, isLoading: recentLoading } =
     useRecentExperiences(5);
@@ -189,15 +181,6 @@ function HomeContent() {
       {
         onSuccess: () => {
           setWriteInput("");
-          queryClient.invalidateQueries({
-            queryKey: getGetRecentExperiencesQueryKey(),
-          });
-          queryClient.invalidateQueries({
-            queryKey: getGetExperiencesByFolderQueryKey(),
-          });
-          queryClient.invalidateQueries({
-            queryKey: getGetFoldersQueryKey(),
-          });
         },
       },
     );
@@ -211,18 +194,6 @@ function HomeContent() {
       {
         onSuccess: () => {
           setAnswerTexts((prev) => ({ ...prev, [questionId]: "" }));
-          queryClient.invalidateQueries({
-            queryKey: getGetQuestionsQueryKey(),
-          });
-          queryClient.invalidateQueries({
-            queryKey: getGetRecentExperiencesQueryKey(),
-          });
-          queryClient.invalidateQueries({
-            queryKey: getGetExperiencesByFolderQueryKey(),
-          });
-          queryClient.invalidateQueries({
-            queryKey: getGetFoldersQueryKey(),
-          });
         },
       },
     );
