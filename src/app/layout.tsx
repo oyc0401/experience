@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="overflow-hidden antialiased bg-neutral-100">
-        <div className="mx-auto w-full max-w-[390px] h-dvh overflow-y-auto bg-white text-neutral-900 shadow-2xl">
+        <div id="main-scroll" className="mx-auto w-full max-w-[390px] h-dvh overflow-y-auto bg-white text-neutral-900 shadow-2xl">
           <AppBar />
           <main className="pb-24">{children}</main>
         </div>

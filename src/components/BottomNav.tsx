@@ -15,7 +15,7 @@ export default function BottomNav() {
   const pathname = usePathname();
   const router = useRouter();
   const { postId, setPostId } = useExperienceStore();
-  const { pageId, setPageId } = useNavigationStore();
+  const { pageId, setPageId, saveScroll } = useNavigationStore();
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-[390px] h-20 bg-white border-t border-neutral-100 flex justify-around items-center z-50">
@@ -24,6 +24,15 @@ export default function BottomNav() {
         const Icon = item.icon;
 
         const handleClick = () => {
+          const container = document.getElementById("main-scroll");
+
+          if (pathname === "/" && pageId === item.pageId) {
+            container?.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+          }
+
+          if (container) saveScroll(pageId, container.scrollTop);
+
           if (pathname !== "/") {
             router.push("/");
           }

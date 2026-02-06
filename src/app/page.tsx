@@ -6,6 +6,7 @@ import {
   MessageSquareMore,
   ChevronRight,
 } from "lucide-react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { useNavigationStore } from "@/stores/navigation";
 import ExperiencePage from "@/app/experience/page";
@@ -178,6 +179,13 @@ function HomeContent() {
 
 export default function HomePage() {
   const pageId = useNavigationStore((s) => s.pageId);
+
+  const savedScroll = useNavigationStore((s) => s.scrollPositions[s.pageId]);
+
+  useEffect(() => {
+    const container = document.getElementById("main-scroll");
+    if (container) container.scrollTo(0, savedScroll);
+  }, [pageId]);
 
   switch (pageId) {
     case "experience":
