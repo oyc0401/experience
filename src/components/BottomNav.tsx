@@ -26,7 +26,7 @@ export default function BottomNav() {
           <Link
             key={item.href}
             href={item.href}
-            className="flex flex-col items-center gap-1"
+            className="flex flex-col items-center gap-1 transition-transform duration-150 active:scale-95"
           >
             <Icon
               size={22}

@@ -19,7 +19,7 @@ export default function HomePage() {
         <div className="px-4 py-3.5 bg-neutral-50 rounded-2xl">
           <textarea
             placeholder="오늘은 어떤 경험을 하셨나요?"
-            rows={1}
+            rows={2}
             className="w-full bg-transparent text-sm leading-relaxed resize-none outline-none placeholder:text-neutral-400 overflow-hidden"
             onInput={(e) => {
               const el = e.currentTarget;
@@ -30,7 +30,7 @@ export default function HomePage() {
         </div>
         <button
           type="button"
-          className="w-full mt-3 py-2.5 bg-neutral-900 text-white text-sm font-medium rounded-xl"
+          className="px-5 py-2 bg-neutral-900 text-white text-sm font-medium rounded-lg ml-auto block mt-3"
         >
           등록하기
         </button>
