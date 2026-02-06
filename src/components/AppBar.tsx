@@ -1,7 +1,8 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Brain, Bell, AlignLeft, ChevronLeft } from "lucide-react";
+import { Brain, Bell, ChevronLeft } from "lucide-react";
+import { useNotificationStore } from "@/stores/notification";
 
 const pageTitles: Record<string, string> = {
   "/experience": "내 경험",
@@ -15,6 +16,7 @@ const pageTitles: Record<string, string> = {
 export default function AppBar() {
   const pathname = usePathname();
   const router = useRouter();
+  const toggle = useNotificationStore((s) => s.toggle);
   const mainPages = ["/", "/experience", "/profile"];
   const isHome = mainPages.includes(pathname);
 
@@ -29,15 +31,10 @@ export default function AppBar() {
           </div>
           <span className="font-bold text-lg tracking-tight">ExpLog</span>
         </div>
-        <div className="flex gap-4">
-          <button className="relative">
-            <Bell className="text-neutral-400" size={22} />
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-neutral-900 rounded-full border-2 border-white" />
-          </button>
-          <button>
-            <AlignLeft className="text-neutral-900" size={22} />
-          </button>
-        </div>
+        <button className="relative" onClick={toggle}>
+          <Bell className="text-neutral-400" size={22} />
+          <span className="absolute -top-1 -right-1 w-2 h-2 bg-neutral-900 rounded-full border-2 border-white" />
+        </button>
       </header>
     );
   }

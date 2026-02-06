@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AppBar from "@/components/AppBar";
 import BottomNav from "@/components/BottomNav";
+import NotificationDialog from "@/components/NotificationDialog";
 
 export const metadata: Metadata = {
   title: "ExpLog",
@@ -20,6 +21,7 @@ export default function RootLayout({
           <AppBar />
           <main className="pb-24">{children}</main>
         </div>
+        <NotificationDialog />
         <BottomNav />
       </body>
     </html>

@@ -74,7 +74,10 @@ export default function RefactorAuthLogicPage() {
           <h1 className="text-lg font-bold leading-tight">
             Refactor: Auth logic optimization
           </h1>
-          <p className="text-[11px] text-neutral-400 mt-0.5">2025.05.14</p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <p className="text-[11px] text-neutral-400">2025.05.14</p>
+            <span className="text-[10px] text-neutral-300 font-mono bg-neutral-50 px-1.5 py-0.5 rounded">a3c6eeb</span>
+          </div>
         </div>
       </div>
 
