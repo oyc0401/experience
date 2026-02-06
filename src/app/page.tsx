@@ -169,6 +169,7 @@ function HomeContent() {
 
   const [writeInput, setWriteInput] = useState("");
   const [answerTexts, setAnswerTexts] = useState<Record<number, string>>({});
+  const [hiddenQuestionIds, setHiddenQuestionIds] = useState<Set<number>>(new Set());
 
   if (homeSubView === "history") {
     return <HistoryView />;
@@ -189,6 +190,7 @@ function HomeContent() {
   const handleAnswer = (questionId: number) => {
     const answer = answerTexts[questionId];
     if (!answer?.trim() || !questionId) return;
+    setHiddenQuestionIds((prev) => new Set(prev).add(questionId));
     answerMutation.mutate(
       { questionId, data: { answer } },
       {
@@ -236,9 +238,9 @@ function HomeContent() {
       <section className="py-4">
         <div className="flex items-center gap-2 mb-4 px-5">
           <h2 className="font-bold text-base">답변 대기 중인 경험</h2>
-          {!questionsLoading && questions.length > 0 && (
+          {!questionsLoading && questions.filter((q) => q.questionId == null || !hiddenQuestionIds.has(q.questionId)).length > 0 && (
             <span className="bg-neutral-900 text-white text-[10px] px-2 py-0.5 rounded-full">
-              {questions.length}
+              {questions.filter((q) => q.questionId == null || !hiddenQuestionIds.has(q.questionId)).length}
             </span>
           )}
         </div>
@@ -256,7 +258,7 @@ function HomeContent() {
             className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pl-5 pr-5 scrollbar-hide pb-1"
             style={{ scrollPaddingLeft: "20px" }}
           >
-            {questions.map((q) => (
+            {questions.filter((q) => q.questionId == null || !hiddenQuestionIds.has(q.questionId)).map((q) => (
               <div
                 key={q.questionId}
                 className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm shrink-0 w-[85%] snap-start"
@@ -315,15 +317,11 @@ function HomeContent() {
                     q.questionId != null && handleAnswer(q.questionId)
                   }
                   disabled={
-                    answerMutation.isPending ||
                     !(q.questionId != null && answerTexts[q.questionId]?.trim())
                   }
                   className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-transform duration-150 active:scale-[0.98] disabled:opacity-50"
                 >
-                  <MessageSquareMore size={16} />{" "}
-                  {answerMutation.isPending
-                    ? "답변 중..."
-                    : "답변하고 기록하기"}
+                  <MessageSquareMore size={16} /> 답변하고 기록하기
                 </button>
               </div>
             ))}
