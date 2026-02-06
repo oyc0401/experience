@@ -1,11 +1,9 @@
 import { Code, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import AppBar from "@/components/AppBar";
 
 export default function ExperiencePage() {
   return (
     <>
-      <AppBar />
       <div className="px-5 py-6">
         <h1 className="text-2xl font-bold mb-6">내 경험</h1>
 

@@ -3,16 +3,19 @@ import Link from "next/link";
 
 const experiences = [
   {
+    slug: "refactor-auth-logic",
     title: "Refactor: Auth logic optimization",
     description: "인증 로직 리팩토링 및 성능 최적화",
     date: "2025.05.14",
   },
   {
+    slug: "experience-api",
     title: "Feat: 경험 기록 API 연동",
     description: "경험 데이터를 저장하는 REST API 연동 구현",
     date: "2025.05.12",
   },
   {
+    slug: "token-refresh-fix",
     title: "Fix: 토큰 갱신 로직 버그 수정",
     description: "리프레시 토큰 만료 시 무한 루프 발생 이슈 해결",
     date: "2025.05.10",
@@ -33,9 +36,10 @@ export default function AppDevExperiencePage() {
 
       <div className="space-y-3">
         {experiences.map((exp) => (
-          <div
-            key={exp.title}
-            className="flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl"
+          <Link
+            key={exp.slug}
+            href={`/experience/app-dev/${exp.slug}`}
+            className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl"
           >
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
               <Github size={18} />
@@ -50,7 +54,7 @@ export default function AppDevExperiencePage() {
             <div className="text-neutral-300">
               <ChevronRight size={14} />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

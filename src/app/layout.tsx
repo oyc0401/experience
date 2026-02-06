@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AppBar from "@/components/AppBar";
 import BottomNav from "@/components/BottomNav";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className="antialiased bg-neutral-100">
         <div className="mx-auto w-full max-w-[390px] min-h-dvh bg-white text-neutral-900 shadow-2xl">
+          <AppBar />
           <main className="pb-24">{children}</main>
         </div>
         <BottomNav />

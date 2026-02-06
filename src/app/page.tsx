@@ -9,13 +9,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import AppBar from "@/components/AppBar";
-
 export default function HomePage() {
   return (
     <>
-      <AppBar />
-
       {/* Hero Section */}
       <section className="px-5 py-8 bg-neutral-50">
         <h1 className="text-2xl font-bold leading-tight mb-3">
@@ -59,42 +55,82 @@ export default function HomePage() {
       </section>
 
       {/* AI Question Card */}
-      <section className="px-5 py-4">
-        <div className="flex items-center gap-2 mb-4">
+      <section className="py-4">
+        <div className="flex items-center gap-2 mb-4 px-5">
           <h2 className="font-bold text-base">답변 대기 중인 경험</h2>
           <span className="bg-neutral-900 text-white text-[10px] px-2 py-0.5 rounded-full">
             2
           </span>
         </div>
 
-        <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm mb-4">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="px-2 py-1 bg-neutral-100 rounded text-[10px] font-medium flex items-center gap-1">
-              <Github size={10} /> GitHub 감지
+        <div className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pl-5 pr-5 scrollbar-hide pb-1">
+          {/* Card 1 */}
+          <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm shrink-0 w-[85%] snap-start">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="px-2 py-1 bg-neutral-100 rounded text-[10px] font-medium flex items-center gap-1">
+                <Github size={10} /> GitHub 감지
+              </div>
+              <span className="text-neutral-300 text-[10px]">2시간 전</span>
             </div>
-            <span className="text-neutral-300 text-[10px]">2시간 전</span>
-          </div>
-          <h3 className="font-bold text-sm mb-1">
-            Refactor: Auth logic optimization
-          </h3>
-          <p className="text-neutral-500 text-xs mb-4">
-            커밋 메시지에서 새로운 기술적 시도가 발견되었습니다.
-          </p>
+            <h3 className="font-bold text-sm mb-1">
+              Refactor: Auth logic optimization
+            </h3>
 
-          <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100 mb-4">
-            <div className="flex gap-2 mb-2">
-              <Bot className="text-neutral-400 mt-0.5 shrink-0" size={14} />
-              <p className="text-xs leading-relaxed font-medium">
-                &ldquo;기존 인증 로직에서 어떤 병목 현상이 있었나요? 그리고 이번
-                최적화를 통해 성능이 얼마나 개선되었는지 수치로 설명해 주실 수
-                있나요?&rdquo;
-              </p>
+            <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100 mb-4">
+              <div className="flex gap-2 mb-2">
+                <Bot className="text-neutral-400 mt-0.5 shrink-0" size={14} />
+                <p className="text-xs leading-relaxed font-medium">
+                  &ldquo;기존 인증 로직에서 어떤 병목 현상이 있었나요? 그리고
+                  이번 최적화를 통해 성능이 얼마나 개선되었는지 수치로 설명해
+                  주실 수 있나요?&rdquo;
+                </p>
+              </div>
             </div>
+
+            <textarea
+              placeholder="이 경험에 대한 답변을 작성해 보세요..."
+              className="w-full p-3 border border-neutral-200 rounded-xl text-sm leading-relaxed resize-none focus:outline-none focus:border-neutral-400 mb-3"
+              rows={3}
+            />
+
+            <button className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+              <MessageSquareMore size={16} /> 답변하고 기록하기
+            </button>
           </div>
 
-          <button className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2">
-            <MessageSquareMore size={16} /> 답변하고 기록하기
-          </button>
+          {/* Card 2 */}
+          <div className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm shrink-0 w-[85%] snap-start">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="px-2 py-1 bg-neutral-100 rounded text-[10px] font-medium flex items-center gap-1">
+                <Github size={10} /> GitHub 감지
+              </div>
+              <span className="text-neutral-300 text-[10px]">1일 전</span>
+            </div>
+            <h3 className="font-bold text-sm mb-1">
+              Feat: 경험 기록 API 연동
+            </h3>
+
+            <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100 mb-4">
+              <div className="flex gap-2 mb-2">
+                <Bot className="text-neutral-400 mt-0.5 shrink-0" size={14} />
+                <p className="text-xs leading-relaxed font-medium">
+                  &ldquo;REST API 설계 시 어떤 기준으로 엔드포인트를
+                  구성했나요? 그리고 React Query를 선택한 이유가
+                  무엇인가요?&rdquo;
+                </p>
+              </div>
+            </div>
+
+            <textarea
+              placeholder="이 경험에 대한 답변을 작성해 보세요..."
+              className="w-full p-3 border border-neutral-200 rounded-xl text-sm leading-relaxed resize-none focus:outline-none focus:border-neutral-400 mb-3"
+              rows={3}
+            />
+
+            <button className="w-full py-3 bg-neutral-900 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+              <MessageSquareMore size={16} /> 답변하고 기록하기
+            </button>
+          </div>
         </div>
       </section>
 
@@ -102,13 +138,13 @@ export default function HomePage() {
       <section className="px-5 py-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-bold text-base">나의 최근 경험</h2>
-          <button className="text-xs text-neutral-400 flex items-center gap-1">
+          <Link href="/history" className="text-xs text-neutral-400 flex items-center gap-1">
             전체보기 <ChevronRight size={12} />
-          </button>
+          </Link>
         </div>
 
         <div className="space-y-3">
-          <div className="flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl">
+          <Link href="/experience/app-dev" className="block flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl">
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
               <Code size={18} />
             </div>
@@ -119,7 +155,7 @@ export default function HomePage() {
             <div className="text-neutral-300">
               <ChevronRight size={14} />
             </div>
-          </div>
+          </Link>
           <div className="flex items-center gap-4 p-4 border border-neutral-100 rounded-2xl">
             <div className="w-10 h-10 bg-neutral-50 rounded-full flex items-center justify-center text-neutral-400">
               <Users size={18} />
