@@ -5,7 +5,7 @@ import { Code, Users, ChevronRight, Search, Github, Pencil } from "lucide-react"
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { useExperienceStore } from "@/stores/experience";
+import { useExperienceStore, type SortOption } from "@/stores/experience";
 import { useSearchStore } from "@/stores/search";
 
 /* ── 경험 목록 데이터 ── */
